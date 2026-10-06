@@ -75,6 +75,7 @@ const { chromium } = require('playwright');
   console.log('File input count:', await page.locator('#fileInput').evaluate(el => el.files.length));
   console.log('File name:', await page.locator('#fileInput').evaluate(el => el.files[0] ? el.files[0].name : 'none'));
   console.log('Global parseCsv:', await page.evaluate(() => typeof parseCsv));
+  console.log('Live parseCsv source:', await page.evaluate(() => parseCsv.toString().slice(0, 2400)));
   console.log('Direct parser result:', await page.evaluate((text) => { try { return {ok:true,count:parseCsv(text).length}; } catch (e) { return {ok:false,error:String(e)}; } }, csv));
   const importedRows = await page.locator('#tbody tr').count();
   console.log('CSV rows after import:', importedRows);
