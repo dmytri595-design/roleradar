@@ -1,0 +1,26 @@
+name: Cutloom live smoke
+on:
+  push:
+    paths:
+      - 'cutloom/**'
+      - '.github/workflows/cutloom-live-smoke.yml'
+  pull_request:
+    paths:
+      - 'cutloom/**'
+      - '.github/workflows/cutloom-live-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save playwright@1.55.0
+      - run: npx playwright install --with-deps chromium
+      - run: node cutloom/e2e/live-smoke.cjs
+        env:
+          CUTLOOM_URL: https://cutloom-demo.vercel.app
