@@ -106,3 +106,7 @@ All identities in `sample-identities.csv` are synthetic. No real customers, secu
 RoleRadar is best positioned as a **working B2B micro-SaaS MVP / acquisition asset**, not as a finished enterprise security platform.
 
 The strongest buyer story is the workflow already implemented today plus the short path to native IdP connectors, persistent multi-user workspaces and recurring reviews.
+
+
+## Build
+Version 1.2.1 hardening pass.
