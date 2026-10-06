@@ -1,0 +1,13 @@
+name,email,role,department,last_login,mfa,admin,apps,status
+Maya Chen,maya@northstar.dev,Workspace Admin,Engineering,2026-10-05,yes,yes,17,active
+Elias Berg,elias@northstar.dev,Finance,Finance,2026-07-18,no,yes,4,active
+Noah Silva,noah@northstar.dev,Support Lead,Support,2026-09-30,yes,no,13,active
+Ava Patel,ava@northstar.dev,Product Manager,Product,2026-09-28,yes,no,9,active
+Liam Holm,liam@northstar.dev,Developer,Engineering,2026-08-08,yes,no,12,active
+Sofia Novak,sofia@northstar.dev,Workspace Admin,Operations,2026-06-03,no,yes,22,active
+Daniel Reed,daniel@northstar.dev,Contractor,Engineering,2026-06-21,no,no,6,active
+Amelia Eriksen,amelia@northstar.dev,Designer,Design,2026-10-02,yes,no,5,active
+Oliver King,oliver@northstar.dev,Workspace Admin,Engineering,2026-10-01,yes,yes,15,active
+Isla Moore,isla@northstar.dev,Analyst,Finance,2026-05-14,no,no,3,active
+Lucas Jensen,lucas@northstar.dev,Intern,Marketing,2026-04-21,no,no,2,active
+Freya Olsen,freya@northstar.dev,Former Employee,Operations,2026-03-11,yes,no,8,disabled
