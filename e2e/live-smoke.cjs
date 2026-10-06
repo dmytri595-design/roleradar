@@ -72,7 +72,12 @@ const { chromium } = require('playwright');
   await page.locator('#uploadBtn').click();
   await page.locator('#fileInput').setInputFiles({ name: 'smoke.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
   await page.waitForTimeout(300);
-  if ((await page.locator('#tbody tr').count()) !== 2) throw new Error('CSV import failed: expected 2 imported rows');
+  const importedRows = await page.locator('#tbody tr').count();
+  console.log('CSV rows after import:', importedRows);
+  console.log('CSV tbody:', await page.locator('#tbody').innerHTML());
+  console.log('Toast after import:', await page.locator('#toast').innerText());
+  console.log('Browser errors after import:', JSON.stringify(errors));
+  if (importedRows !== 2) throw new Error('CSV import failed: expected 2 imported rows, got '+importedRows);
   if ((await page.locator('#posture').innerText()) === '—') throw new Error('CSV import did not recalculate posture');
 
   page.once('dialog', d => d.accept());
