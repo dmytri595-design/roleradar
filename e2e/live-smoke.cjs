@@ -14,7 +14,7 @@ const { chromium } = require('playwright');
   const body = await page.locator('body').innerText();
   console.log('PAGE TITLE:', await page.title());
   console.log('PAGE BODY:', body.slice(0, 600));
-  if (!body.includes('Command Center')) throw new Error('Command Center missing; live URL returned unexpected content');
+  if (!body.includes('Overview')) throw new Error('Overview missing; live URL returned unexpected content');
 
   await page.getByRole('button', { name: 'Load demo' }).click();
   await page.waitForTimeout(200);
