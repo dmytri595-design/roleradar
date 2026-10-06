@@ -1,0 +1,25 @@
+name: Validate RoleRadar
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HTML and JavaScript
+        run: |
+          test -s index.html
+          node --check <(python - <<'PY'
+          from pathlib import Path
+          text=Path("index.html").read_text(encoding="utf-8")
+          start=text.find("<script>")
+          end=text.rfind("</script>")
+          assert start >= 0 and end > start
+          print(text[start+8:end])
+          PY
+          )
