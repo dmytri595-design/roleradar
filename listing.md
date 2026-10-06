@@ -1,44 +1,57 @@
-# RoleRadar — Acquisition Listing
+# RoleRadar - Acquisition Listing
 
 ## Product
-**RoleRadar — Explainable identity access reviews for lean security teams**
+
+**RoleRadar - Explainable identity access reviews for lean security teams**
 
 ## Asking price
-**$4,500 USD — one-time acquisition**
+
+**$4,500 USD - one-time acquisition**
 
 ## Current status
+
 **Working MVP / pre-launch / pre-revenue**
 
-## Live demo
-https://roleradar-demo.vercel.app
+## Links
 
-## Repository
-https://github.com/dmytri595-design/roleradar
+- Live demo: https://roleradar-demo.vercel.app
+- Repository: https://github.com/dmytri595-design/roleradar
 
-## What the product does
+## Buyer-ready summary
 
 RoleRadar turns a routine identity export into a complete access-review workflow:
 
-**Import → Normalize → Score → Investigate → Assign → Resolve → Re-run → Export**
+**Import -> Normalize -> Score -> Investigate -> Assign -> Resolve -> Re-run -> Export**
 
-The product focuses on a concrete B2B security workflow instead of being a generic AI chat wrapper.
+It is deliberately focused on a painful B2B security workflow instead of being a generic AI wrapper.
 
 ### Implemented today
 
-- robust CSV import;
-- common identity-export header aliases;
-- deterministic risk scoring;
+- robust CSV import with common identity-export aliases;
+- deterministic, explainable risk scoring;
 - privileged + MFA analysis;
 - stale and dormant account checks;
 - application-sprawl detection;
-- identity evidence view;
+- identity inventory and evidence view;
 - remediation findings with lifecycle;
-- owner and due dates;
-- policy editing;
-- review history;
-- executive metrics;
+- owner and due-date assignment;
+- bulk remediation actions;
+- editable policy thresholds and weights;
+- review history and executive metrics;
 - CSV / JSON / HTML audit exports;
-- browser-local persistence.
+- browser-local persistence;
+- responsive UI.
+
+## Why this is a good acquisition asset
+
+A buyer gets a working product foundation rather than a concept:
+
+- self-contained static MVP with no required database, API keys, or build pipeline;
+- MIT-licensed source;
+- synthetic demo dataset for immediate testing;
+- deterministic rules that are easy to explain, tune, and replace;
+- clear extension points for auth, Postgres, IdP connectors, scheduling, notifications, billing, and multi-tenancy;
+- automated source validation and live browser smoke testing.
 
 ## Buyer profile
 
@@ -51,15 +64,7 @@ Good fits include:
 - IAM / security vendors looking for a bolt-on workflow;
 - founders who want a focused security SaaS starting point.
 
-## Why $4,500
-
-AICRAYS currently states that it acquires early-stage micro-SaaS products **under $5,000**, so the asking price deliberately stays below that ceiling.
-
-Comparable current pre-revenue marketplace listings on Acquire include a working AI meeting-notes SaaS listed at **$2.5k**, a complete queueing SaaS listed at **$4k**, and a more developed AI legaltech product listed at **$8.26k**. RoleRadar sits between the smaller MVP assets and the more developed application because it has a focused working workflow, but does not yet include production authentication, backend persistence or native IdP connectors.
-
-This is an **asking price**, not a claim that the product has a $4,500 fair-market guarantee.
-
-## Revenue / traction
+## Commercial status
 
 - MRR: $0
 - Customers: none claimed
@@ -68,18 +73,19 @@ This is an **asking price**, not a claim that the product has a $4,500 fair-mark
 
 The valuation is therefore asset / replacement-cost oriented rather than revenue-multiple oriented.
 
-## What is included
+## Included in the sale
 
-- complete source code;
-- live demo;
-- synthetic sample dataset;
-- risk rules and policy editor;
-- remediation workflow;
-- export/report workflow;
-- documentation;
-- handoff-ready repository structure.
+1. complete source code;
+2. live Vercel demo;
+3. synthetic sample dataset;
+4. risk rules and policy editor;
+5. remediation workflow;
+6. export / audit-report workflow;
+7. documentation and pricing rationale;
+8. handoff-ready GitHub repository;
+9. MIT license.
 
-## Highest-value next development
+## Recommended next build
 
 1. authentication + Postgres;
 2. Okta / Microsoft Entra / Google Workspace integrations;
@@ -88,6 +94,16 @@ The valuation is therefore asset / replacement-cost oriented rather than revenue
 5. multi-tenant workspaces + Stripe;
 6. optional LLM explanation layer.
 
+## Pricing rationale
+
+The $4,500 ask is intentionally positioned as a credible early-stage micro-SaaS acquisition anchor. It reflects a working, focused B2B workflow while discounting for the absence of production authentication, backend persistence, native IdP connectors, customers, and revenue.
+
+The supporting valuation memo records the market comparisons used to set the ask. Those comparisons are public **asking prices**, not confirmed transaction prices.
+
+## Handover
+
+The product is designed for a clean one-time transfer. The current demo is already deployed, the repository is self-contained, and the core workflow is documented in README.md and docs/ACQUISITION_BRIEF.md.
+
 ## Disclosure
 
-RoleRadar is a pre-revenue MVP acquisition asset. Demo identities are synthetic. No customer data, production identity integrations, certifications, revenue or traction are represented.
+RoleRadar is a pre-revenue MVP acquisition asset. Demo identities are synthetic. No customer data, production identity integrations, certifications, revenue, or traction are represented.
