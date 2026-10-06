@@ -1,90 +1,13 @@
 # RoleRadar — Acquisition Listing
 
-## Product Name
-RoleRadar
-
-## One-line pitch
-Explainable identity access reviews for lean security teams.
-
-## What the buyer gets
-A polished working MVP that turns identity CSV exports into:
-
-- risk-scored identities with transparent reasons;
-- prioritized findings and remediation states;
-- configurable policy thresholds and scoring weights;
-- review-history snapshots;
-- executive summary metrics;
-- CSV, JSON and standalone HTML evidence exports.
-
-## Current status
-Working MVP / Pre-launch / Pre-revenue.
-
-The current product is browser-only. Imported data is processed locally and persisted in localStorage for the demo.
-
-## Target users
-Startup IT/security leads, MSPs, agencies, B2B SaaS teams preparing for customer security reviews, and consultants running recurring access reviews.
-
-## Why the problem is valuable
-Access reviews are repetitive, deadline-driven work. The raw data often exists already, but teams still need to normalize users, spot stale or privileged access, explain the risk and produce evidence.
-
-RoleRadar packages those steps into one focused workflow.
-
-## Differentiation
-This is deliberately not a generic AI chat wrapper.
-
-The core value is the workflow:
-**Import → Normalize → Score → Investigate → Assign → Resolve → Re-run → Export evidence**
-
-The risk model is explicit, editable and easy for a buyer to replace with native policy logic.
-
-## Commercial hypothesis
-Suggested future plans after adding persistent workspaces and IdP connectors:
-
-- Starter — $29/mo
-- Team — $89/mo
-- MSP — $249/mo
-
-These are pricing hypotheses, not current revenue.
-
-## Current traction
-$0 MRR.
-
-No users, customers or revenue are claimed.
+## Product
+**RoleRadar — Explainable identity access reviews for lean security teams**
 
 ## Asking price
-**$4,500 one-time**
+**$4,500 USD — one-time acquisition**
 
-Negotiable for a fast acquisition or structured handoff.
-
-## Why it can be worth more than a small code demo
-The buyer is not purchasing only a static dashboard. The acquisition includes:
-
-- the product concept and positioning;
-- working risk/review workflow;
-- configurable policy engine;
-- remediation state machine;
-- local persistence;
-- import normalization;
-- exportable evidence artifacts;
-- responsive UI;
-- clear production extension path.
-
-## Highest-value next steps for the buyer
-
-### Phase 1
-Move the local state model to Postgres and add authentication.
-
-### Phase 2
-Add Okta / Microsoft Entra / Google Workspace connectors.
-
-### Phase 3
-Add scheduled reviews and notifications.
-
-### Phase 4
-Add multi-tenant workspaces, billing and an MSP mode.
-
-### Phase 5
-Add behavioral signals and optional LLM-generated explanations on top of the deterministic policy engine.
+## Current status
+**Working MVP / pre-launch / pre-revenue**
 
 ## Live demo
 https://roleradar-demo.vercel.app
@@ -92,5 +15,79 @@ https://roleradar-demo.vercel.app
 ## Repository
 https://github.com/dmytri595-design/roleradar
 
+## What the product does
+
+RoleRadar turns a routine identity export into a complete access-review workflow:
+
+**Import → Normalize → Score → Investigate → Assign → Resolve → Re-run → Export**
+
+The product focuses on a concrete B2B security workflow instead of being a generic AI chat wrapper.
+
+### Implemented today
+
+- robust CSV import;
+- common identity-export header aliases;
+- deterministic risk scoring;
+- privileged + MFA analysis;
+- stale and dormant account checks;
+- application-sprawl detection;
+- identity evidence view;
+- remediation findings with lifecycle;
+- owner and due dates;
+- policy editing;
+- review history;
+- executive metrics;
+- CSV / JSON / HTML audit exports;
+- browser-local persistence.
+
+## Buyer profile
+
+Good fits include:
+
+- security / IT consultants;
+- MSPs;
+- B2B SaaS teams;
+- compliance-readiness products;
+- IAM / security vendors looking for a bolt-on workflow;
+- founders who want a focused security SaaS starting point.
+
+## Why $4,500
+
+AICRAYS currently states that it acquires early-stage micro-SaaS products **under $5,000**, so the asking price deliberately stays below that ceiling.
+
+Comparable current pre-revenue marketplace listings on Acquire include a working AI meeting-notes SaaS listed at **$2.5k**, a complete queueing SaaS listed at **$4k**, and a more developed AI legaltech product listed at **$8.26k**. RoleRadar sits between the smaller MVP assets and the more developed application because it has a focused working workflow, but does not yet include production authentication, backend persistence or native IdP connectors.
+
+This is an **asking price**, not a claim that the product has a $4,500 fair-market guarantee.
+
+## Revenue / traction
+
+- MRR: $0
+- Customers: none claimed
+- TTM revenue: $0
+- Profit: $0
+
+The valuation is therefore asset / replacement-cost oriented rather than revenue-multiple oriented.
+
+## What is included
+
+- complete source code;
+- live demo;
+- synthetic sample dataset;
+- risk rules and policy editor;
+- remediation workflow;
+- export/report workflow;
+- documentation;
+- handoff-ready repository structure.
+
+## Highest-value next development
+
+1. authentication + Postgres;
+2. Okta / Microsoft Entra / Google Workspace integrations;
+3. recurring scheduled reviews;
+4. notification and ticketing integrations;
+5. multi-tenant workspaces + Stripe;
+6. optional LLM explanation layer.
+
 ## Disclosure
-RoleRadar is an MVP acquisition asset. Demo identities are synthetic. No production identity data, customers, compliance certifications or revenue are represented.
+
+RoleRadar is a pre-revenue MVP acquisition asset. Demo identities are synthetic. No customer data, production identity integrations, certifications, revenue or traction are represented.
