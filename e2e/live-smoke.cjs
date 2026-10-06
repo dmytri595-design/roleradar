@@ -46,7 +46,7 @@ const { chromium } = require('playwright');
   await page.getByRole('button', { name: 'Save policy' }).click();
   await page.waitForTimeout(200);
 
-  await page.getByRole('button', { name: /Command Center/ }).click();
+  await page.getByRole('button', { name: /Overview/ }).click();
   await page.waitForTimeout(200);
 
   const [csvDownload] = await Promise.all([
