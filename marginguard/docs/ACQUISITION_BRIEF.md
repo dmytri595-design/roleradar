@@ -15,7 +15,7 @@ It converts a routine project export into a repeatable economics review:
 
 The core promise is simple: detect margin erosion while the project is still running, not after the final invoice.
 
-The current product is a browser-local MVP. It is intentionally pre-launch and pre-revenue.
+The current product is a browser-local MVP (v2.0). It is intentionally pre-launch and pre-revenue.
 
 ### 2. What is already built
 
@@ -33,8 +33,7 @@ The current product is a browser-local MVP. It is intentionally pre-launch and p
 **Decision workflow**
 - automatic risk scoring;
 - At risk / Watch / Healthy states;
-- alert queue;
-- risk states and alert queue;
+- alert queue with Open / In review / Resolved state;
 - project detail evidence;
 - configurable business thresholds.
 
