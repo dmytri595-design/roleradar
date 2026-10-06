@@ -34,7 +34,7 @@ The current product is a browser-local MVP. It is intentionally pre-launch and p
 - automatic risk scoring;
 - At risk / Watch / Healthy states;
 - alert queue;
-- Open / In review / Resolved lifecycle;
+- risk states and alert queue;
 - project detail evidence;
 - configurable business thresholds.
 
