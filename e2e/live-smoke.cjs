@@ -7,12 +7,14 @@ const { chromium } = require('playwright');
   page.on('pageerror', err => errors.push(String(err)));
   page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
 
-  await page.goto('https://roleradar-demo.vercel.app/', { waitUntil: 'networkidle', timeout: 30000 });
+  await page.goto('https://roleradar-demo.vercel.app/?smoke=1', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(500);
   await page.getByText('RoleRadar', { exact: true }).first().waitFor();
 
   const body = await page.locator('body').innerText();
-  if (!body.includes('Command Center')) throw new Error('Command Center missing');
+  console.log('PAGE TITLE:', await page.title());
+  console.log('PAGE BODY:', body.slice(0, 600));
+  if (!body.includes('Command Center')) throw new Error('Command Center missing; live URL returned unexpected content');
 
   await page.getByRole('button', { name: 'Load demo' }).click();
   await page.waitForTimeout(200);
@@ -67,8 +69,8 @@ const { chromium } = require('playwright');
   await page.waitForTimeout(300);
   if (!(await page.locator('#dataMeta').innerText()).includes('2 identities')) throw new Error('CSV import failed');
 
-  await page.locator('#resetBtn').click();
   page.once('dialog', d => d.accept());
+  await page.locator('#resetBtn').click();
   await page.waitForTimeout(100);
 
   if (errors.length) throw new Error('Browser errors: ' + errors.join(' | '));
