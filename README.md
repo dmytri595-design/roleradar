@@ -14,6 +14,8 @@ https://roleradar-demo.vercel.app
 
 **Working B2B micro-SaaS MVP / pre-launch / pre-revenue**
 
+Live browser smoke-tested on the public demo after the latest production deployment.
+
 The current MVP is browser-local. Identity exports are processed in the user's browser and can be persisted locally. No production customer data, live IdP credentials, or current revenue are claimed.
 
 ## What works
