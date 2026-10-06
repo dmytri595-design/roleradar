@@ -115,7 +115,72 @@ function exportJSON(){download('roleradar-evidence-pack.json',JSON.stringify({pr
 function exportHTML(){const r=summary(),rows=findings.filter(function(f){return f.status!=='resolved'}).slice(0,80).map(function(f){return '<tr><td>'+esc(f.name||f.email)+'</td><td>'+esc(f.reason)+'</td><td>'+f.score+'</td><td>'+esc(f.status)+'</td><td>'+esc(f.owner||'Unassigned')+'</td></tr>'}).join('');const out='<!doctype html><html><head><meta charset="utf-8"><title>RoleRadar Audit Report</title><style>body{font-family:Arial,sans-serif;max-width:920px;margin:40px auto;color:#111;font-size:12px}h1{margin-bottom:4px}.score{font-size:46px;font-weight:800}table{border-collapse:collapse;width:100%;margin-top:20px}th,td{border:1px solid #ddd;padding:7px;text-align:left}th{background:#f4f4f4}.muted{color:#666}</style></head><body><h1>RoleRadar — Access Review</h1><div class="muted">Generated '+new Date().toLocaleString()+'</div><div class="score">'+r.posture+' / 100</div><p>'+data.length+' identities reviewed · '+r.open.length+' open findings · '+r.critical.length+' critical findings · '+r.stale.length+' stale active accounts · '+r.mfa+'% MFA coverage.</p><table><thead><tr><th>Identity</th><th>Reason</th><th>Risk</th><th>Status</th><th>Owner</th></tr></thead><tbody>'+rows+'</tbody></table><p class="muted">RoleRadar '+VERSION+' · browser-local processing · synthetic demo data.</p></body></html>';download('roleradar-audit-report.html',out,'text/html');toast('HTML audit report generated')}
 function download(name,content,type){const a=document.createElement('a');const body=type.indexOf('text/')===0?'\\uFEFF'+content:content;a.href=URL.createObjectURL(new Blob([body],{type:type+';charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},900)}
 function parseCsvRow(line,delim){const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===delim&&!q){out.push(cur.trim());cur=''}else cur+=c}out.push(cur.trim());return out}
-function parseCsv(text){const clean=String(text).replace(/^\\uFEFF/,'');const first=(clean.split(/\\r?\\n/,1)[0]||'');const comma=parseCsvRow(first,',').length,semi=parseCsvRow(first,';').length,delim=semi>comma?';':',';const rows=[];let row=[],cur='',q=false;for(let i=0;i<clean.length;i++){const c=clean[i];if(c==='"'){if(q&&clean[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===delim&&!q){row.push(cur.trim());cur=''}else if((c==='\\n'||c==='\\r')&&!q){if(c==='\\r'&&clean[i+1]==='\\n')i++;row.push(cur.trim());rows.push(row);row=[];cur=''}else cur+=c}if(cur.length||row.length){row.push(cur.trim());rows.push(row)}if(q)throw new Error('CSV contains an unmatched quote.');const nonempty=rows.filter(function(r){return r.some(function(v){return String(v).trim()!==''})});if(nonempty.length<2)throw new Error('CSV needs a header and at least one data row.');const headers=nonempty[0].map(function(h){return String(h).trim().toLowerCase().replace(/\\s+/g,'_')});const aliases={name:['name','full_name','user','username','display_name'],email:['email','mail','user_email'],role:['role','title','job_title'],department:['department','team','group'],last_login:['last_login','last_sign_in','lastsignin','last_active','lastactivity'],mfa:['mfa','mfa_enabled','mfa_status'],admin:['admin','is_admin','privileged','administrator'],apps:['apps','app_count','connected_apps'],status:['status','state','account_status']};const map={};Object.keys(aliases).forEach(function(k){map[k]=headers.findIndex(function(h){return aliases[k].indexOf(h)>=0})});function normalize(vals){function get(k){return map[k]===-1?'':String(vals[map[k]]||'').trim()}function truth(v){return ['yes','true','enabled','1','on'].indexOf(v.toLowerCase())>=0}function st(v){return ['disabled','deactivated','suspended','terminated'].indexOf(v.toLowerCase())>=0?'disabled':'active'}const d=get('last_login');return{name:get('name')||'Unknown',email:get('email'),role:get('role')||'Member',department:get('department')||'General',last_login:/^\\d{4}-\\d{2}-\\d{2}$/.test(d)?d:'',mfa:truth(get('mfa'))?'yes':'no',admin:truth(get('admin'))?'yes':'no',apps:Math.round(num(get('apps'),0,0,10000)),status:st(get('status')),owner:'',due:''}}const items=[];for(let i=1;i<nonempty.length;i++){const r=nonempty[i].slice();while(r.length<headers.length)r.push('');items.push(normalize(r))}return items}
+function parseCsv(text){
+const clean=String(text).replace(/^\uFEFF/,'');
+const first=(clean.split(/\r?\n/,1)[0]||'');
+const comma=parseCsvRow(first,',').length;
+const semi=parseCsvRow(first,';').length;
+const delim=semi>comma?';':',';
+const rows=[];
+let row=[],cur='',q=false;
+for(let i=0;i<clean.length;i++){
+const ch=clean[i];
+if(ch==='"'){
+if(q&&clean[i+1]==='"'){cur+='"';i++}else q=!q;
+}else if(ch===delim&&!q){
+row.push(cur.trim());cur='';
+}else if((ch==='\n'||ch==='\r')&&!q){
+if(ch==='\r'&&clean[i+1]==='\n')i++;
+row.push(cur.trim());rows.push(row);row=[];cur='';
+}else{
+cur+=ch;
+}
+}
+if(q)throw new Error('CSV contains an unmatched quote.');
+if(cur.length||row.length){row.push(cur.trim());rows.push(row);}
+const nonempty=rows.filter(function(r){return r.some(function(v){return String(v).trim()!==''});});
+if(nonempty.length<2)throw new Error('CSV needs a header and at least one data row.');
+const headers=nonempty[0].map(function(h){return String(h).trim().toLowerCase().replace(/\s+/g,'_');});
+const aliases={
+name:['name','full_name','user','username','display_name'],
+email:['email','mail','user_email'],
+role:['role','title','job_title'],
+department:['department','team','group'],
+last_login:['last_login','last_sign_in','lastsignin','last_active','lastactivity'],
+mfa:['mfa','mfa_enabled','mfa_status'],
+admin:['admin','is_admin','privileged','administrator'],
+apps:['apps','app_count','connected_apps'],
+status:['status','state','account_status']
+};
+const map={};
+Object.keys(aliases).forEach(function(k){map[k]=headers.findIndex(function(h){return aliases[k].indexOf(h)>=0});});
+function normalize(vals){
+function get(k){return map[k]===-1?'':String(vals[map[k]]||'').trim();}
+function truth(v){return ['yes','true','enabled','1','on'].indexOf(v.toLowerCase())>=0;}
+function st(v){return ['disabled','deactivated','suspended','terminated'].indexOf(v.toLowerCase())>=0?'disabled':'active';}
+const d=get('last_login');
+return{
+name:get('name')||'Unknown',
+email:get('email'),
+role:get('role')||'Member',
+department:get('department')||'General',
+last_login:/^\d{4}-\d{2}-\d{2}$/.test(d)?d:'',
+mfa:truth(get('mfa'))?'yes':'no',
+admin:truth(get('admin'))?'yes':'no',
+apps:Math.round(num(get('apps'),0,0,10000)),
+status:st(get('status')),
+owner:'',
+due:''
+};
+}
+const items=[];
+for(let i=1;i<nonempty.length;i++){
+const vals=nonempty[i].slice();
+while(vals.length<headers.length)vals.push('');
+items.push(normalize(vals));
+}
+return items;
+}
 function importFile(file){if(!file)return;if(file.size>5*1024*1024){toast('CSV is too large. Maximum size is 5 MB.');return}const reader=new FileReader();reader.onerror=function(){toast('Could not read that file.')};reader.onload=function(){try{data=parseCsv(reader.result);findings=[];history=[];lastReview=null;runReview(false);toast(data.length+' identities imported')}catch(e){toast(e&&e.message?e.message:'Could not parse CSV')}};reader.readAsText(file)}
 $('fileInput').onchange=function(e){importFile(e.target.files[0])};$('uploadBtn').onclick=function(){$('fileInput').value='';$('fileInput').click()};$('uploadCard').onclick=function(){$('fileInput').value='';$('fileInput').click()};$('uploadCard').ondragover=function(e){e.preventDefault();$('uploadCard').classList.add('drag')};$('uploadCard').ondragleave=function(){$('uploadCard').classList.remove('drag')};$('uploadCard').ondrop=function(e){e.preventDefault();$('uploadCard').classList.remove('drag');importFile(e.dataTransfer.files[0])};
 $('demoBtn').onclick=demo;$('resetBtn').onclick=reset;$('runBtn').onclick=function(){runReview(true)};$('exportBtn').onclick=exportCSV;$('exportBtn2').onclick=exportCSV;$('packBtn').onclick=exportJSON;$('htmlReportBtn').onclick=exportHTML;$('savePolicies').onclick=function(){document.querySelectorAll('.policyInput').forEach(function(i){const n=Number(i.value);if(!Number.isFinite(n))return;const k=i.dataset.k;if(i.dataset.weight==='true')policy.weights[k]=Math.round(Math.min(100,Math.max(0,n)));else policy[k]=Math.round(Math.min(3650,Math.max(1,n)))});policy=sanitizePolicy(policy);runReview(false)};
