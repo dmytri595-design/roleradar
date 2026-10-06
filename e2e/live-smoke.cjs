@@ -19,7 +19,12 @@ const { chromium } = require('playwright');
   await page.getByRole('button', { name: 'Load demo' }).click();
   await page.waitForTimeout(200);
   if ((await page.locator('#posture').innerText()) === '—') throw new Error('Demo did not calculate posture');
-  if (!(await page.locator('#tbody tr').count())) throw new Error('Demo identity table is empty');
+  const tableCount = await page.locator('#tbody tr').count();
+  if (!tableCount) {
+    console.log('TBODY HTML:', await page.locator('#tbody').innerHTML());
+    console.log('BROWSER ERRORS SO FAR:', JSON.stringify(errors));
+    throw new Error('Demo identity table is empty');
+  }
 
   await page.getByRole('button', { name: /Identities/ }).click();
   if (!(await page.locator('#viewIdentities').innerText()).includes('Identity inventory')) throw new Error('Identities tab failed');
