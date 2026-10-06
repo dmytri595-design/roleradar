@@ -46,7 +46,7 @@ MarginGuard answers four questions early enough to act:
 - project watchlist with risk states;
 - project economics detail view;
 - alert lifecycle: Open / In review / Resolved;
-- CSV import with quoted-field support and delimiter detection;
+- CSV import with quoted-field support, delimiter detection, common header aliases and forgiving currency/number parsing;
 - CSV export;
 - JSON evidence-pack export;
 - HTML report export;
@@ -95,6 +95,8 @@ The product can be upgraded without replacing the core logic:
 9. optionally add AI-written margin-review summaries.
 
 ## Quality
+
+The current release is v2.0.0 and has live Chromium smoke coverage for the customer-facing workflow.
 
 The source is a single self-contained HTML application. It is intentionally easy to audit, transfer and extend.
 
