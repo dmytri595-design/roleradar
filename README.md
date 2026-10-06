@@ -109,6 +109,19 @@ python -m http.server 4173
 
 Then open http://127.0.0.1:4173
 
+## Second product: MarginGuard
+
+A separate working B2B micro-SaaS MVP is included under `marginguard/`.
+
+**MarginGuard — Project profitability control for agencies and consultancies**
+
+- Live demo: https://marginguard-demo.vercel.app
+- Source: https://github.com/dmytri595-design/roleradar/tree/main/marginguard
+- Asking price: **$4,900 one-time**
+- Stage: working MVP / pre-launch / pre-revenue
+
+MarginGuard monitors forecast project margin, hour burn and unbilled scope exposure, with CSV import/export, project details, configurable controls, alert workflow and portable reports.
+
 ## Acquisition positioning
 
 RoleRadar is best positioned as a **focused, working security workflow** rather than a finished enterprise platform.
