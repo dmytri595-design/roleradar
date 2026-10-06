@@ -2,45 +2,44 @@
 
 **Explainable identity access reviews for lean security teams.**
 
-RoleRadar turns a routine identity export into a repeatable access-review workflow: normalize the data, calculate an explainable risk score, turn findings into remediation tasks, tune the review policy, track review snapshots, and export portable evidence.
+RoleRadar turns a routine identity export into a repeatable access-review workflow:
+
+**Import → Normalize → Score → Investigate → Assign → Resolve → Re-run → Export evidence**
 
 ## Live demo
 
 https://roleradar-demo.vercel.app
 
-## What is implemented
+## Current status
 
-- Command Center with posture score, open findings, privileged identities, stale accounts and posture trend.
-- CSV import wizard with preview and source-column mapping.
-- Automatic alias detection for common identity export headers.
-- Browser-local processing with localStorage persistence.
-- Transparent risk engine with configurable thresholds and weights.
-- Identity inventory with data-quality checks.
-- Identity detail drawer with evidence and remediation actions.
-- Findings queue with open / in-review / resolved states.
-- Owner and due-date tracking for remediation findings.
-- Bulk resolution for selected findings.
-- Policy editor with immediate score refresh.
-- Review history snapshots.
-- Executive brief with posture summary and key metrics.
-- CSV export.
-- JSON evidence-pack export.
-- Standalone HTML audit-report export.
-- Responsive dashboard for desktop and tablet.
+**Working B2B micro-SaaS MVP / pre-launch / pre-revenue**
 
-## Supported source shape
+The current MVP is browser-local. Identity exports are processed in the user's browser and can be persisted locally. No production customer data, live IdP credentials, or current revenue are claimed.
 
-`name,email,role,department,last_login,mfa,admin,apps,status`
+## What works
 
-The importer also recognizes common aliases such as `full_name`, `mail`, `job_title`, `team`, `last_sign_in`, `mfa_enabled`, `is_admin`, `app_count`, and `state`.
+- deterministic, explainable identity risk scoring;
+- privileged-access / MFA checks;
+- stale-account checks;
+- dormant privileged-access checks;
+- connected-app sprawl checks;
+- disabled-account historical footprint checks;
+- CSV import with quoted-field support, comma/semicolon delimiters, BOM handling and common header aliases;
+- identity inventory with data-quality scoring;
+- identity detail evidence view;
+- remediation queue with Open / In Review / Resolved states;
+- owner and due-date assignment;
+- bulk remediation actions;
+- editable policy thresholds and weights;
+- local review history;
+- CSV, JSON and HTML audit-report exports;
+- responsive dashboard.
 
 ## Risk model
 
-RoleRadar intentionally avoids a black-box score in the MVP.
+The MVP uses transparent rules rather than a black-box model.
 
-Default signals:
-
-| Signal | Default weight |
+| Signal | Default points |
 | --- | ---: |
 | Privileged access without MFA | 35 |
 | Stale active identity | 25 |
@@ -55,58 +54,49 @@ Severity bands:
 - Medium: 20–44
 - Low: 0–19
 
-All thresholds and weights are editable inside **Policies**.
+Thresholds and weights can be changed in **Policies**.
 
-## Privacy boundary
+## Demo data
 
-This MVP processes imported identity data in the browser. No server-side identity database or live IdP connection is included.
+The demo uses synthetic Northstar Labs identities. They are fictional and are not customer, revenue, compliance or security-certification evidence.
 
-That is deliberate: the buyer gets a working workflow and an obvious integration path without requiring API keys for the demo.
+## Architecture
 
-## Architecture / extension path
+The product is deliberately easy to extend:
 
-The product is intentionally small and easy to acquire.
+1. move browser-local state to Postgres;
+2. add workspace authentication;
+3. add Okta / Microsoft Entra / Google Workspace connectors;
+4. add scheduled reviews;
+5. add notifications / ticketing;
+6. add billing and multi-tenant workspaces;
+7. optionally add LLM-written explanations on top of deterministic signals.
 
-Recommended production extension:
+## Repository
 
-1. Next.js / React frontend
-2. Managed authentication
-3. Postgres for workspaces, identities, findings and review snapshots
-4. Connector adapters for Okta, Microsoft Entra and Google Workspace
-5. Scheduled reviews
-6. Email / Slack / ticketing notifications
-7. Multi-tenant billing
-
-## Repository structure
-
-```
-index.html                 # complete working MVP
-sample-identities.csv     # synthetic demo input
-listing.md                 # acquisition listing copy
-.github/workflows/         # keeps the live demo source mirrored into GitHub
-LICENSE                    # MIT
-```
+- `index.html` — self-contained working MVP
+- `sample-identities.csv` — synthetic input data
+- `listing.md` — acquisition listing
+- `valuation.md` — pricing rationale
+- `LICENSE` — MIT
+- `.github/workflows/validate.yml` — non-destructive source validation
 
 ## Local run
 
-No build step is required.
+No build step is required:
 
-```
+```bash
 python -m http.server 4173
 ```
 
-Open http://127.0.0.1:4173
-
-## Demo data disclosure
-
-All identities in `sample-identities.csv` are synthetic. No real customers, security certifications, revenue, or production identity integrations are claimed.
+Then open http://127.0.0.1:4173
 
 ## Acquisition positioning
 
-RoleRadar is best positioned as a **working B2B micro-SaaS MVP / acquisition asset**, not as a finished enterprise security platform.
+RoleRadar is best positioned as a **focused, working security workflow** rather than a finished enterprise platform.
 
-The strongest buyer story is the workflow already implemented today plus the short path to native IdP connectors, persistent multi-user workspaces and recurring reviews.
+The buyer is purchasing a working product foundation, a specific B2B problem/positioning, an explainable risk engine, remediation workflow and a clear path to integrations and recurring revenue.
 
+**Current asking price: $4,500 one-time.**
 
-## Build
-Version 1.2.1 hardening pass.
+No MRR or customer traction is claimed.
