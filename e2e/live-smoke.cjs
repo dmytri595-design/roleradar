@@ -55,7 +55,7 @@ const { chromium } = require('playwright');
   ]);
   if (csvDownload.suggestedFilename() !== 'roleradar-review.csv') throw new Error('CSV export failed');
 
-  await page.getByRole('button', { name: /Evidence/ }).click();
+  await page.getByRole('button', { name: /Audit Pack/ }).click();
   const [jsonDownload] = await Promise.all([
     page.waitForEvent('download'),
     page.locator('#packBtn').click()
