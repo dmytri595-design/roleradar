@@ -77,6 +77,16 @@ const { chromium } = require('playwright');
   console.log('Global parseCsv:', await page.evaluate(() => typeof parseCsv));
   console.log('Live parseCsv source:', await page.evaluate(() => parseCsv.toString().slice(0, 2400)));
   console.log('Direct parser result:', await page.evaluate((text) => { try { return {ok:true,count:parseCsv(text).length}; } catch (e) { return {ok:false,error:String(e)}; } }, csv));
+  const parserMatrix = await page.evaluate(() => {
+    const cases = [
+      'name,email\nAlice,a@example.com\nBob,b@example.com\n',
+      'name;email\nAlice;a@example.com\nBob;b@example.com\n',
+      'name,email,role\n"Smith, Jane",j@example.com,"Security, Lead"\nBob,b@example.com,Engineer\n'
+    ];
+    return cases.map(source => { try { return {count: parseCsv(source).length}; } catch (e) { return {error: String(e)}; } });
+  });
+  console.log('Parser matrix:', JSON.stringify(parserMatrix));
+  if (parserMatrix.some(x => x.error || x.count !== 2)) throw new Error('CSV parser matrix failed: '+JSON.stringify(parserMatrix));
   const importedRows = await page.locator('#tbody tr').count();
   console.log('CSV rows after import:', importedRows);
   console.log('CSV tbody:', await page.locator('#tbody').innerHTML());
