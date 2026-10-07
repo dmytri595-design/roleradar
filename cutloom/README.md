@@ -10,7 +10,7 @@ https://cutloom-demo.vercel.app
 
 ## Current status
 
-UI / media release: v1.2
+UI / media release: v1.3
 
 **Working creator-tool MVP / pre-launch / pre-revenue**
 
@@ -28,14 +28,15 @@ The demo runs locally in the browser. No account, database or API key is require
 - script desk with timing metrics;
 - visual asset shelf with synthetic treatments and real local image/video/audio uploads;
 - per-scene media assignment with Cover / Contain / Fill fit modes;
-- per-scene video start offset and audio volume controls;
+- per-scene video start offset and audio volume controls with scene-duration audio clipping;
 - drag-and-drop media import plus delete/clear asset management;
 - IndexedDB persistence for uploaded media across reloads;
 - JSON project export with asset metadata;
+- self-contained contact-sheet HTML export that embeds compatible local media (with size safeguards for video);
 -
 - CSV shot-list export;
 - HTML contact-sheet export;
-- browser-side WebM rendering from Canvas frames plus uploaded image/video media and optional Web Audio track when the browser supports the required APIs;
+- browser-side WebM rendering from Canvas frames plus uploaded image/video media and optional Web Audio track, with scene-bounded audio playback;
 - keyboard shortcuts for save and playback;
 - real storyboard reordering and scene move controls;
 - responsive layout without external runtime dependencies.
