@@ -33,7 +33,7 @@ Project metadata and scene references are stored in localStorage. Uploaded binar
 
 ## Rendering path
 
-The local renderer creates a Canvas matching the selected aspect ratio, composites uploaded image/video media with scene text, applies simple motion treatment, captures the canvas at 30fps, optionally mixes scene audio through Web Audio's `MediaStreamDestination`, then records the combined stream with a supported WebM MediaRecorder codec.
+The local renderer creates a Canvas matching the selected aspect ratio, composites uploaded image/video media with scene text, applies simple motion treatment, captures the canvas at 30fps, mixes assigned scene audio through Web Audio's `MediaStreamDestination` when available, clips each audio source to its scene duration, then records the combined stream with a supported WebM MediaRecorder codec.
 
 The renderer is intentionally browser-local. It can produce real WebM drafts from uploaded media, but it is not a cloud transcoder and does not promise universal MP4/codec support.
 
@@ -41,7 +41,7 @@ The renderer is intentionally browser-local. It can produce real WebM drafts fro
 
 - Project JSON: editable source of truth for a Cutloom project, including media metadata and scene references.
 - Shot-list CSV: scene-level handoff format.
-- Contact-sheet HTML: human-readable review artifact.
+- Contact-sheet HTML: human-readable review artifact; compatible local image/video assets can be embedded in the exported file.
 
 ## Deployment
 
