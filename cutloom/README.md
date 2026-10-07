@@ -33,7 +33,6 @@ The demo runs locally in the browser. No account, database or API key is require
 - IndexedDB persistence for uploaded media across reloads;
 - JSON project export with asset metadata;
 - self-contained contact-sheet HTML export that embeds compatible local media (with size safeguards for video);
--
 - CSV shot-list export;
 - HTML contact-sheet export;
 - browser-side WebM rendering from Canvas frames plus uploaded image/video media and optional Web Audio track, with scene-bounded audio playback;
