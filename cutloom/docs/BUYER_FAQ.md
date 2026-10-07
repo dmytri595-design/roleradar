@@ -10,7 +10,7 @@ No claimed paying users and $0 MRR.
 
 ## Does it really create a video?
 
-Yes. The MVP includes a browser-side WebM rendering path using Canvas and MediaRecorder where the browser exposes the required APIs. The output is a lightweight procedural draft, not a full NLE render pipeline.
+Yes. The MVP records a browser Canvas at 30fps and can composite uploaded local image/video files plus optional scene audio into a WebM download where the browser supports the required APIs. It is still a lightweight editor, not a full NLE.
 
 ## Are the demo visuals licensed stock footage?
 
@@ -28,9 +28,9 @@ No. The current project is local-first and uses browser persistence.
 
 No. The current MVP does not claim live AI provider usage.
 
-## Can the buyer add real media?
+## Can the buyer use real media?
 
-Yes. The natural next product layer is upload/storage, media metadata, thumbnails, a real timeline and server-side rendering.
+Yes. This layer is already implemented for browser-supported local image, video and audio files. Uploaded files are persisted in IndexedDB, assigned per scene and used by the local renderer. Production expansion can add cloud storage, thumbnails, proxy media, advanced trimming and server-side FFmpeg.
 
 ## Can it become collaborative?
 
