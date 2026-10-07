@@ -8,7 +8,7 @@
 
 **Problem Solved:** Keeps narrative planning and lightweight visual assembly in one editing-style workspace before a full NLE or team review system is required.
 
-**Repository:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.1
+**Repository:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.3
 
 **Demo:** https://cutloom-demo.vercel.app
 
