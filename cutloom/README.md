@@ -10,11 +10,11 @@ https://cutloom-demo.vercel.app
 
 ## Current status
 
-UI release: v1.1
+UI / media release: v1.2
 
 **Working creator-tool MVP / pre-launch / pre-revenue**
 
-The demo runs locally in the browser. No account, database, API key or production media storage is required.
+The demo runs locally in the browser. No account, database or API key is required. Uploaded media files are stored in the browser's IndexedDB; project metadata is stored in localStorage.
 
 ## What works
 
@@ -26,21 +26,27 @@ The demo runs locally in the browser. No account, database, API key or productio
 - browser-local project persistence with localStorage;
 - forgiving project import and input normalization;
 - script desk with timing metrics;
-- visual asset shelf with instant scene styling;
-- JSON project export;
+- visual asset shelf with synthetic treatments and real local image/video/audio uploads;
+- per-scene media assignment with Cover / Contain / Fill fit modes;
+- per-scene video start offset and audio volume controls;
+- drag-and-drop media import plus delete/clear asset management;
+- IndexedDB persistence for uploaded media across reloads;
+- JSON project export with asset metadata;
+-
 - CSV shot-list export;
 - HTML contact-sheet export;
-- browser-side WebM rendering via Canvas + MediaRecorder when supported;
+- browser-side WebM rendering from Canvas frames plus uploaded image/video media and optional Web Audio track when the browser supports the required APIs;
 - keyboard shortcuts for save and playback;
+- real storyboard reordering and scene move controls;
 - responsive layout without external runtime dependencies.
 
 ## Demo concept
 
-The fictional demo is a 28-second launch reel. Scenes are synthetic; they are not customer content, revenue evidence, licensed footage or production integrations.
+The fictional demo is a 28-second launch reel. Synthetic scenes are still included, but the editor can now ingest real local media files. No customer content, revenue evidence, licensed footage or production integrations are claimed.
 
 ## Extension path
 
-A buyer can extend the MVP with real media uploads, cloud projects, collaborative review, transcript import, TTS, stock-media connectors, AI storyboarding, brand kits, version history, billing and team workspaces.
+A buyer can extend the MVP with cloud projects, collaborative review, transcript import, TTS, stock-media connectors, AI storyboarding, brand kits, version history, billing and team workspaces. Server-side FFmpeg / MP4 export remains a production extension.
 
 ## Repository files
 
