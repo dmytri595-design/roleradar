@@ -7,7 +7,7 @@ I am offering Cutloom as a focused one-time acquisition: a working browser-first
 The product is pre-launch and pre-revenue, so the offer is about acquiring a polished product foundation and saving build time rather than buying an existing revenue stream.
 
 Demo: https://cutloom-demo.vercel.app  
-Source: https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.1  
+Source: https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.2  
 Asking price: $4,900 USD one-time
 
 ## Diligence reply
