@@ -49,7 +49,7 @@ This makes the MVP visually and behaviorally distinct from analytics, finance an
 **Vercel project:** `cutloom-demo`  
 **Production alias:** https://cutloom-demo.vercel.app  
 **Latest verified production deployment:** READY  
-**Repository:** https://github.com/dmytri595-design/roleradar/tree/main/cutloom
+**Repository:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.1
 
 The live browser smoke test runs through GitHub Actions against the public production URL.
 
