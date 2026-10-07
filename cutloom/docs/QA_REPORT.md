@@ -8,7 +8,7 @@
 
 ## Current release coverage
 
-The v1.2 smoke suite verifies the production editor rather than only API availability. It exercises:
+The v1.3 smoke suite verifies the production editor rather than only API availability. It exercises:
 
 - HTTP response and application initialization;
 - six-scene demo dataset;
@@ -25,7 +25,7 @@ The v1.2 smoke suite verifies the production editor rather than only API availab
 
 ## Latest run evidence
 
-GitHub Actions run: `37590809581`  
+GitHub Actions run: `37614039453`  
 Job: `112691579644`  
 Conclusion: `success`
 
@@ -36,7 +36,7 @@ CUTLOOM_STATE ... "6 scenes" ... indexedDB:true
 CUTLOOM_ADD ... "7 SCENES"
 CUTLOOM_MEDIA_UPLOAD {"uploaded":3,"persistedStateAssets":3}
 CUTLOOM_MEDIA_PERSIST {"uploadedAfterReload":3}
-CUTLOOM_RENDER {"filename":"launch-reel-september.webm","bytes":155404}
+CUTLOOM_RENDER {"filename":"launch-reel-september.webm","bytes":166587}
 CUTLOOM_SMOKE_OK {"media":{"upload":true,"persistence":true,"render":true},"scenes":1}
 ```
 
