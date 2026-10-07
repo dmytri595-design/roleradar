@@ -10,6 +10,8 @@ https://cutloom-demo.vercel.app
 
 ## Current status
 
+UI release: v1.1
+
 **Working creator-tool MVP / pre-launch / pre-revenue**
 
 The demo runs locally in the browser. No account, database, API key or production media storage is required.
