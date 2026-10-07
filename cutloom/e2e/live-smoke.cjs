@@ -135,6 +135,7 @@ async function makeWebmFixture(page) {
   await page.waitForSelector('#canvas');
   await page.getByRole('button', { name: 'Assets' }).click();
   await page.waitForFunction(() => document.querySelectorAll('#assetsGrid .asset-media-card').length === 3);
+  await page.waitForFunction(() => document.querySelectorAll('#mediaSelect option').length >= 3);
   console.log('CUTLOOM_MEDIA_PERSIST', JSON.stringify({
     uploadedAfterReload: await page.locator('#assetsGrid .asset-media-card').count()
   }));
