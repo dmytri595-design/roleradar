@@ -6,7 +6,7 @@ Cutloom is a self-contained, browser-local creator-tool MVP for turning a script
 
 The product is intentionally positioned as an **editing workspace**, not a generic admin dashboard. The central experience is a cinematic preview canvas surrounded by scene controls, story structure and timeline context.
 
-**UI release:** v1.1  
+**UI / media release:** v1.2  
 **Status:** Working MVP / pre-launch / pre-revenue  
 **Paying users:** 0 claimed  
 **Monthly revenue:** $0 claimed  
@@ -17,7 +17,7 @@ The product is intentionally positioned as an **editing workspace**, not a gener
 
 **Write -> Shape scenes -> Style -> Sequence -> Preview -> Export**
 
-The current demo supports project-level composition and format selection, scene selection from storyboard or timeline, scene editing, 16:9 / 9:16 preview, script editing, visual preset application, browser-local persistence, JSON/CSV/HTML exports, and browser-side WebM rendering where the required APIs are available.
+The current demo supports project-level composition and format selection, scene selection from storyboard or timeline, scene editing, 16:9 / 9:16 preview, script editing, visual presets, real local image/video/audio import, per-scene media assignment, cover/contain/fill fitting, video start offsets, audio volume, IndexedDB media persistence, scene reordering, JSON/CSV/HTML exports, and browser-side WebM rendering from media plus optional audio where the required APIs are available.
 
 ## 3. UX differentiator
 
@@ -38,8 +38,8 @@ This makes the MVP visually and behaviorally distinct from analytics, finance an
 - Static HTML/CSS/JavaScript application.
 - No framework or build step required for the product demo.
 - No backend or API key required for the demo.
-- Browser persistence uses localStorage.
-- WebM preview rendering uses Canvas capture plus MediaRecorder when supported.
+- Project metadata uses localStorage; uploaded binary assets use IndexedDB.
+- WebM rendering composites uploaded image/video media with Canvas capture plus MediaRecorder, with optional Web Audio mixing for assigned audio.
 - JSON, CSV and HTML export paths are included.
 - User-entered text is escaped before being inserted into exported HTML.
 - Responsive UI supports desktop and smaller screens.
@@ -49,7 +49,7 @@ This makes the MVP visually and behaviorally distinct from analytics, finance an
 **Vercel project:** `cutloom-demo`  
 **Production alias:** https://cutloom-demo.vercel.app  
 **Latest verified production deployment:** READY  
-**Repository:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.1
+**Repository:** https://github.com/dmytri595-design/roleradar/tree/main/cutloom
 
 The live browser smoke test runs through GitHub Actions against the public production URL.
 
@@ -60,10 +60,10 @@ The included launch-reel project is fictional and synthetic. It is not customer 
 ## 7. Extension roadmap
 
 **Phase 1 - production media**
-- real image/video upload;
-- object storage;
-- asset metadata and thumbnails;
-- real timeline media blocks.
+- cloud object storage and synced projects;
+- proxy media and production thumbnail pipeline;
+- advanced trimming and real timeline media blocks;
+- server-side FFmpeg / MP4 rendering.
 
 **Phase 2 - collaborative SaaS**
 - authentication;
@@ -96,11 +96,11 @@ The buyer should separately confirm whether they require a standalone GitHub rep
 - no production customers;
 - no revenue;
 - no cloud persistence;
-- no real media storage pipeline;
+- no cloud media storage or server-side transcoding;
 - no built-in collaboration;
 - no AI provider integration in the MVP;
-- WebM rendering depends on browser support for the required APIs;
-- the public GitHub product currently lives in a dedicated `cutloom/` directory inside a broader repository; the sale package contains only Cutloom materials.
+- WebM rendering depends on browser support for Canvas capture, MediaRecorder and optional Web Audio APIs;
+- the public GitHub product lives in a dedicated `cutloom/` directory inside a broader repository; a standalone sale snapshot can be prepared from the Cutloom-only files.
 
 ## 10. Buyer handoff outcome
 
