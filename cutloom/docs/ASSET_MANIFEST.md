@@ -1,6 +1,6 @@
 # Cutloom - asset manifest
 
-**Release:** v1.2  
+**Release:** v1.3  
 **Status:** working MVP / pre-launch / pre-revenue  
 **Asking price:** $4,900 USD one-time  
 **Live demo:** https://cutloom-demo.vercel.app  
