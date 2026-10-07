@@ -16,7 +16,7 @@ This is positioned as an early-stage creator-tool acquisition asset rather than 
 
 ## Value drivers
 
-The differentiator is interaction design: Cutloom presents the product as a miniature editing environment rather than another CRUD dashboard. The browser-side render path makes the MVP demonstrable without a backend.
+The differentiator is interaction design: Cutloom presents the product as a miniature editing environment rather than another CRUD dashboard. The MVP now also accepts real local image/video/audio assets, persists them in-browser, and can render media-aware WebM drafts without a backend.
 
 ## What is not claimed
 
