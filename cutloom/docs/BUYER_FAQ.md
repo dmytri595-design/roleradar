@@ -10,7 +10,7 @@ No claimed paying users and $0 MRR.
 
 ## Does it really create a video?
 
-Yes. The MVP records a browser Canvas at 30fps and can composite uploaded local image/video files plus optional scene audio into a WebM download where the browser supports the required APIs. It is still a lightweight editor, not a full NLE.
+Yes. The MVP records a browser Canvas at 30fps and can composite uploaded local image/video files plus optional scene audio into a WebM download where the browser supports the required APIs. Scene audio is bounded by each scene's duration. It is still a lightweight editor, not a full NLE.
 
 ## Are the demo visuals licensed stock footage?
 
