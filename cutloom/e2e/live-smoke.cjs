@@ -94,7 +94,7 @@ async function makeWebmFixture(page) {
     cards: await page.locator('#storyGrid .scene-card').count()
   }));
 
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.locator('.navbtn[data-screen="edit"]').click();
   const imageFixture = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#142033"/><circle cx="470" cy="100" r="80" fill="#d9ff4a"/><text x="36" y="300" fill="white" font-size="42">Cutloom Media</text></svg>');
   const videoFixture = await makeWebmFixture(page);
   if (!videoFixture) throw new Error('Browser cannot generate WebM fixture');
@@ -138,7 +138,7 @@ async function makeWebmFixture(page) {
   for (let i = 0; i < 6; i++) {
     await page.locator('#deleteBtn').click();
   }
-  if ((await page.locator('#sceneCount').innerText()).trim() !== '1 scenes') throw new Error('Scene reduction failed');
+  if ((await page.locator('#sceneCount').innerText()).trim() !== '1 scene') throw new Error('Scene reduction failed');
   await page.locator('#durationInput').fill('1');
   await page.locator('#mediaSelect').selectOption(videoOption.value);
   await page.locator('#audioSelect').selectOption(audioOption.value);
