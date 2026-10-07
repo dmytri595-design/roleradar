@@ -144,7 +144,7 @@ async function makeWebmFixture(page) {
   for (let i = 0; i < 6; i++) {
     await page.locator('#deleteBtn').click();
   }
-  if ((await page.locator('#sceneCount').innerText()).trim() !== '1 scene') throw new Error('Scene reduction failed');
+  if ((await page.locator('#sceneCount').innerText()).trim().toLowerCase() !== '1 scene') throw new Error('Scene reduction failed');
   await page.locator('#durationInput').fill('1');
   await page.locator('#mediaSelect').selectOption(videoOption.value);
   await page.locator('#audioSelect').selectOption(audioOption.value);
