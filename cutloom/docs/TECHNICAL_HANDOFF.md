@@ -29,17 +29,17 @@ cutloom/
 
 ## Browser state
 
-The project stores its working state locally in the browser. The demo therefore does not create server-side customer records.
+Project metadata and scene references are stored in localStorage. Uploaded binary media is stored in IndexedDB and reconstructed into temporary object URLs on reload. The demo therefore does not create server-side customer records.
 
 ## Rendering path
 
-The WebM draft renderer creates a Canvas matching the selected aspect ratio, captures it at 30fps, uses MediaRecorder with a supported WebM codec when available, and downloads the resulting Blob as a `.webm` file.
+The local renderer creates a Canvas matching the selected aspect ratio, composites uploaded image/video media with scene text, applies simple motion treatment, captures the canvas at 30fps, optionally mixes scene audio through Web Audio's `MediaStreamDestination`, then records the combined stream with a supported WebM MediaRecorder codec.
 
-This is a demo-grade local pipeline, not a cloud transcoding service.
+The renderer is intentionally browser-local. It can produce real WebM drafts from uploaded media, but it is not a cloud transcoder and does not promise universal MP4/codec support.
 
 ## Data portability
 
-- Project JSON: editable source of truth for a Cutloom project.
+- Project JSON: editable source of truth for a Cutloom project, including media metadata and scene references.
 - Shot-list CSV: scene-level handoff format.
 - Contact-sheet HTML: human-readable review artifact.
 
@@ -53,7 +53,7 @@ A buyer moving toward production should separate concerns into:
 
 - authenticated workspace + database;
 - object storage for source media and renders;
-- server-side media processing / FFmpeg;
+- server-side media processing / FFmpeg for MP4/H.264 and long-form renders;
 - background render jobs;
 - signed asset URLs;
 - collaborative project/version model;
