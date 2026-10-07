@@ -1,6 +1,6 @@
 # Cutloom - asset manifest
 
-**Release:** v1.1  
+**Release:** v1.2  
 **Status:** working MVP / pre-launch / pre-revenue  
 **Asking price:** $4,900 USD one-time  
 **Live demo:** https://cutloom-demo.vercel.app  
@@ -8,7 +8,7 @@
 
 ## Included product assets
 
-- `index.html` - current self-contained application
+- `index.html` - current self-contained application with real local media ingestion and WebM compositing
 - `sample-project.json` - synthetic six-scene demo project
 - `README.md` - product overview and run instructions
 - `listing.md` - acquisition listing copy
@@ -21,7 +21,7 @@
 - `docs/QA_REPORT.md` - live verification report
 - `docs/TRANSFER_CHECKLIST.md` - transaction checklist
 - `docs/BUYER_OUTREACH.md` - buyer outreach copy
-- `e2e/live-smoke.cjs` - Playwright production smoke test
+- `e2e/live-smoke.cjs` - Playwright production smoke test covering media upload, persistence and render
 - `.github/workflows/cutloom-live-smoke.yml` - CI workflow
 
 ## Sale document
