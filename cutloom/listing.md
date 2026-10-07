@@ -4,9 +4,9 @@
 
 **Category:** creator tools / video workflow
 
-**Tech stack:** self-contained HTML/CSS/JavaScript, browser Canvas, MediaRecorder, localStorage
+**Tech stack:** self-contained HTML/CSS/JavaScript, Canvas, MediaRecorder, Web Audio API, IndexedDB, localStorage
 
-**Description:** Cutloom is a focused browser-local video creation workspace for turning a script into a storyboard, scene timeline, captions and a shareable WebM draft.
+**Description:** Cutloom is a focused browser-local video creation workspace for turning a script into a storyboard, scene timeline, captions, real local media assets and shareable WebM drafts.
 
 **Problem solved:** lightweight video teams often jump between notes, storyboards, caption docs and editing software before the narrative is settled. Cutloom gives that early-stage workflow one visual surface.
 
@@ -18,6 +18,6 @@
 
 **Payment model:** one-time acquisition. Buyer receives the source, demo, synthetic sample project and documentation.
 
-**Included:** working MVP source, public demo, browser-local render path, JSON/CSV/HTML exports, Playwright smoke test and GitHub repository.
+**Included:** working MVP source, public demo, browser-local image/video/audio ingestion, IndexedDB persistence, media-aware WebM render path, JSON/CSV/HTML exports, Playwright smoke test and GitHub repository.
 
-**Honesty note:** the public demo is pre-launch and uses synthetic visual treatments rather than licensed stock footage. WebM rendering is supported by browsers with Canvas capture and MediaRecorder; the MVP does not yet provide cloud storage, AI model calls, speech synthesis or collaborative review.
+**Honesty note:** the public demo is pre-launch and still uses synthetic visual treatments for its sample project. The MVP now accepts browser-supported local image/video/audio files and can render them into WebM in-browser. It does not provide cloud storage, server-side FFmpeg/MP4 delivery, AI model calls, speech synthesis or collaborative review.
