@@ -80,7 +80,8 @@ async function makeWebmFixture(page) {
   await page.getByRole('button', { name: 'Scenes' }).click();
   await page.waitForSelector('#storyGrid .scene-card');
   if (await page.locator('#storyGrid .scene-card').count() !== 6) throw new Error('Storyboard did not render');
-  await page.locator('#storyGrid .scene-card').nth(2).click();
+  await page.locator('#storyGrid .scene-card').nth(2).locator('.scene-edit').click();
+  await page.waitForSelector('#titleInput');
   await page.locator('#titleInput').fill('A changed scene title');
   if ((await page.locator('#previewTitle').innerText()) !== 'A changed scene title') throw new Error('Inspector did not update preview');
 
