@@ -1,109 +1,35 @@
 const { chromium } = require('playwright');
-
+const URL = process.env.CUTLOOM_URL || 'https://cutloom-demo.vercel.app';
 (async () => {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-  const errors = [];
-  page.on('pageerror', err => errors.push(String(err)));
-  page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
-
-  await page.goto('https://roleradar-demo.vercel.app/?smoke=1', { waitUntil: 'networkidle', timeout: 30000 });
-  await page.waitForTimeout(500);
-  await page.getByText('RoleRadar', { exact: true }).first().waitFor();
-
-  const body = await page.locator('body').innerText();
-  console.log('PAGE TITLE:', await page.title());
-  console.log('PAGE BODY:', body.slice(0, 600));
-  if (!body.includes('Overview')) throw new Error('Overview missing; live URL returned unexpected content');
-
-  await page.getByRole('button', { name: 'Load demo' }).click();
-  await page.waitForTimeout(200);
-  if ((await page.locator('#posture').innerText()) === '—') throw new Error('Demo did not calculate posture');
-  const tableCount = await page.locator('#tbody tr').count();
-  if (!tableCount) {
-    console.log('TBODY HTML:', await page.locator('#tbody').innerHTML());
-    console.log('BROWSER ERRORS SO FAR:', JSON.stringify(errors));
-    throw new Error('Demo identity table is empty');
-  }
-
-  await page.getByRole('button', { name: /Identities/ }).click();
-  if (!(await page.locator('#viewIdentities').innerText()).includes('Identity inventory')) throw new Error('Identities tab failed');
-
-  await page.getByRole('button', { name: /Findings/ }).click();
-  if (!(await page.locator('#viewFindings').innerText()).includes('Remediation queue')) throw new Error('Findings tab failed');
-
-  const findingCount = await page.locator('.findingRow').count();
-  if (!findingCount) throw new Error('Demo produced no findings');
-
-  await page.getByRole('button', { name: 'Start review' }).first().click();
-  await page.waitForTimeout(150);
-  if ((await page.locator('.findingStatus.review').count()) < 1) throw new Error('Finding could not move to review');
-
-  await page.getByRole('button', { name: /Policies/ }).click();
-  if (!(await page.locator('#viewPolicies').innerText()).includes('Policy controls')) throw new Error('Policies tab failed');
-  const stale = page.locator('.policyInput[data-k="staleDays"]');
-  await stale.fill('60');
-  await page.getByRole('button', { name: 'Save policy' }).click();
-  await page.waitForTimeout(200);
-
-  await page.getByRole('button', { name: /Overview/ }).click();
-  await page.waitForTimeout(200);
-
-  const [csvDownload] = await Promise.all([
-    page.waitForEvent('download'),
-    page.locator('#exportBtn').click()
-  ]);
-  if (csvDownload.suggestedFilename() !== 'roleradar-review.csv') throw new Error('CSV export failed');
-
-  await page.getByRole('button', { name: /Audit Pack/ }).click();
-  const [jsonDownload] = await Promise.all([
-    page.waitForEvent('download'),
-    page.locator('#packBtn').click()
-  ]);
-  if (jsonDownload.suggestedFilename() !== 'roleradar-evidence-pack.json') throw new Error('JSON export failed');
-
-  const [htmlDownload] = await Promise.all([
-    page.waitForEvent('download'),
-    page.locator('#htmlReportBtn').click()
-  ]);
-  if (htmlDownload.suggestedFilename() !== 'roleradar-audit-report.html') throw new Error('HTML export failed');
-
-  const csv = 'name,email,role,department,last_login,mfa,admin,apps,status\nTest User,test@example.com,Developer,Engineering,2026-10-05,yes,no,3,active\nTest Admin,admin@example.com,Admin,IT,2026-01-01,no,yes,12,active\n';
-  await page.locator('#uploadBtn').click();
-  await page.locator('#fileInput').setInputFiles({ name: 'smoke.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
-  await page.waitForTimeout(300);
-  console.log('File input count:', await page.locator('#fileInput').evaluate(el => el.files.length));
-  console.log('File name:', await page.locator('#fileInput').evaluate(el => el.files[0] ? el.files[0].name : 'none'));
-  console.log('Global parseCsv:', await page.evaluate(() => typeof parseCsv));
-  console.log('Live parseCsv source:', await page.evaluate(() => parseCsv.toString().slice(0, 2400)));
-  console.log('Direct parser result:', await page.evaluate((text) => { try { return {ok:true,count:parseCsv(text).length}; } catch (e) { return {ok:false,error:String(e)}; } }, csv));
-  const parserMatrix = await page.evaluate(() => {
-    const cases = [
-      'name,email\nAlice,a@example.com\nBob,b@example.com\n',
-      'name;email\nAlice;a@example.com\nBob;b@example.com\n',
-      'name,email,role\n"Smith, Jane",j@example.com,"Security, Lead"\nBob,b@example.com,Engineer\n'
-    ];
-    return cases.map(source => { try { return {count: parseCsv(source).length}; } catch (e) { return {error: String(e)}; } });
-  });
-  console.log('Parser matrix:', JSON.stringify(parserMatrix));
-  if (parserMatrix.some(x => x.error || x.count !== 2)) throw new Error('CSV parser matrix failed: '+JSON.stringify(parserMatrix));
-  const importedRows = await page.locator('#tbody tr').count();
-  console.log('CSV rows after import:', importedRows);
-  console.log('CSV tbody:', await page.locator('#tbody').innerHTML());
-  console.log('Toast after import:', await page.locator('#toast').innerText());
-  console.log('Browser errors after import:', JSON.stringify(errors));
-  if (importedRows !== 2) throw new Error('CSV import failed: expected 2 imported rows, got '+importedRows);
-  if ((await page.locator('#posture').innerText()) === '—') throw new Error('CSV import did not recalculate posture');
-
-  page.once('dialog', d => d.accept());
-  await page.locator('#resetBtn').click();
-  await page.waitForTimeout(100);
-
-  if (errors.length) throw new Error('Browser errors: ' + errors.join(' | '));
-  console.log('LIVE SMOKE PASS');
-  console.log('tested: load, demo, identities, findings, remediation, policy save, CSV export, JSON export, HTML export, CSV import, reset');
+  const browser = await chromium.launch({headless:true});
+  const page = await browser.newPage({viewport:{width:1440,height:1000}});
+  const errors=[];
+  page.on('pageerror',e=>errors.push(String(e)));
+  page.on('console',m=>{if(m.type()==='error') errors.push(m.text())});
+  const response = await page.goto(URL,{waitUntil:'networkidle'});
+  if (!response || !response.ok()) throw new Error(`Live URL returned ${response?.status() ?? 'no response'}`);
+  await page.waitForSelector('#canvas');
+  if (!(await page.title()).includes('Launch Reel')) throw new Error('Unexpected title');
+  const sceneCountText = (await page.locator('#sceneCount').textContent()).trim();
+  console.log('CUTLOOM_STATE', JSON.stringify({title: await page.title(), sceneCountText, bodyStart: (await page.locator('body').innerText()).slice(0,240)}));
+  if (sceneCountText !== '6 scenes') throw new Error(`Demo scenes missing: ${JSON.stringify(sceneCountText)}`);
+  await page.getByRole('button',{name:'Scenes'}).click();
+  await page.waitForSelector('#storyGrid .scene-card');
+  if (await page.locator('#storyGrid .scene-card').count() !== 6) throw new Error('Storyboard did not render');
+  await page.locator('#storyGrid .scene-card').nth(2).click();
+  await page.locator('#titleInput').fill('A changed scene title');
+  if ((await page.locator('#previewTitle').innerText()) !== 'A changed scene title') throw new Error('Inspector did not update preview');
+  await page.getByRole('button',{name:'Portrait'}).click();
+  if (!(await page.locator('#canvas').evaluate(el=>el.classList.contains('canvas-portrait')))) throw new Error('Portrait mode failed');
+  await page.locator('#addSceneBtn').click();
+  await page.waitForFunction(() => document.querySelector('#sceneCount')?.textContent?.trim() === '7 scenes');
+  console.log('CUTLOOM_ADD', JSON.stringify({sceneCount: await page.locator('#sceneCount').innerText(), cards: await page.locator('.scene-card').count()}));
+  await page.getByRole('button',{name:'Export'}).click();
+  const dl = await Promise.all([page.waitForEvent('download'), page.locator('#csvBtn').click()]);
+  if (!dl[0].suggestedFilename().endsWith('.csv')) throw new Error('CSV export failed');
+  const media = await page.evaluate(() => ({mediaRecorder: !!window.MediaRecorder, captureStream: !!HTMLCanvasElement.prototype.captureStream}));
+  if (!media.mediaRecorder || !media.captureStream) console.warn('WebM render APIs unavailable in browser environment', media);
+  if (errors.length) throw new Error('Browser errors: '+errors.join(' | '));
+  console.log('CUTLOOM_SMOKE_OK', JSON.stringify({url:URL,media,scenes:7}));
   await browser.close();
-})().catch(async err => {
-  console.error(err);
-  process.exit(1);
-});
+})().catch(err=>{console.error(err); process.exit(1)});

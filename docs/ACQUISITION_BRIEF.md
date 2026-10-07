@@ -1,210 +1,107 @@
-# RoleRadar
-## Acquisition Brief
+# Cutloom - acquisition brief
 
-**Working B2B micro-SaaS MVP for explainable identity access reviews**
+## 1. Executive summary
 
-**Asking price: $4,500 USD - one-time acquisition**
+Cutloom is a self-contained, browser-local creator-tool MVP for turning a script into a sequence of scenes, captions, a visual storyboard, a multi-track timeline and a shareable WebM draft.
 
-### 1. Executive summary
+The product is intentionally positioned as an **editing workspace**, not a generic admin dashboard. The central experience is a cinematic preview canvas surrounded by scene controls, story structure and timeline context.
 
-RoleRadar is a focused security workflow that converts a routine identity export into a repeatable access-review process:
+**UI release:** v1.1  
+**Status:** Working MVP / pre-launch / pre-revenue  
+**Paying users:** 0 claimed  
+**Monthly revenue:** $0 claimed  
+**Asking price:** $4,900 USD one-time  
+**Demo:** https://cutloom-demo.vercel.app
 
-**Import -> Normalize -> Score -> Investigate -> Assign -> Resolve -> Re-run -> Export evidence**
+## 2. User workflow
 
-The product is designed for lean security teams, consultants, MSPs, compliance-readiness products, and security/IAM vendors that need a practical access-review workflow without starting from zero.
+**Write -> Shape scenes -> Style -> Sequence -> Preview -> Export**
 
-The current product is a browser-local MVP. It is intentionally pre-launch and pre-revenue, so the buyer is purchasing working software, product positioning, and a clear expansion path rather than existing recurring revenue.
+The current demo supports project-level composition and format selection, scene selection from storyboard or timeline, scene editing, 16:9 / 9:16 preview, script editing, visual preset application, browser-local persistence, JSON/CSV/HTML exports, and browser-side WebM rendering where the required APIs are available.
 
-### 2. What is already built
+## 3. UX differentiator
 
-**Risk intelligence**
-- deterministic risk scoring;
-- privileged-access without MFA detection;
-- stale identity detection;
-- dormant privileged-access detection;
-- connected-app sprawl detection;
-- disabled-account historical footprint detection;
-- explainable signal-level reasons and severity bands.
+The UI is deliberately built around creative flow rather than CRUD patterns:
 
-**Review workflow**
-- normalized identity inventory;
-- identity evidence view;
-- remediation findings;
-- Open / In Review / Resolved lifecycle;
-- owner and due-date assignment;
-- bulk remediation actions;
-- review history;
-- configurable policy thresholds and weights.
+- **Preview:** judge the scene as a viewer.
+- **Inspector:** make precise scene edits.
+- **Storyboard:** think in narrative beats.
+- **Timeline:** think in rhythm and sequence.
+- **Script:** maintain the spoken/caption layer.
+- **Assets:** rapidly change visual direction.
+- **Export:** package the cut for review.
 
-**Data and evidence**
-- CSV import;
-- quoted-field parsing;
-- comma and semicolon delimiters;
-- BOM handling;
-- common header aliases;
-- CSV export;
-- JSON evidence-pack export;
-- HTML audit-report export;
-- browser-local persistence.
+This makes the MVP visually and behaviorally distinct from analytics, finance and security dashboards.
 
-### 3. Risk model
+## 4. Technical snapshot
 
-| Signal | Default points |
-|---|---:|
-| Privileged access without MFA | 35 |
-| Stale active identity | 25 |
-| Dormant privileged access | 20 |
-| Connected-app sprawl | 15 |
-| Disabled identity retained in evidence | 10 |
+- Static HTML/CSS/JavaScript application.
+- No framework or build step required for the product demo.
+- No backend or API key required for the demo.
+- Browser persistence uses localStorage.
+- WebM preview rendering uses Canvas capture plus MediaRecorder when supported.
+- JSON, CSV and HTML export paths are included.
+- User-entered text is escaped before being inserted into exported HTML.
+- Responsive UI supports desktop and smaller screens.
 
-Severity bands:
+## 5. Current infrastructure
 
-| Score | Severity |
-|---:|---|
-| 70+ | Critical |
-| 45-69 | High |
-| 20-44 | Medium |
-| 0-19 | Low |
+**Vercel project:** `cutloom-demo`  
+**Production alias:** https://cutloom-demo.vercel.app  
+**Latest verified production deployment:** READY  
+**Repository:** https://github.com/dmytri595-design/roleradar/tree/main/cutloom
 
-Policies are editable in the product, so a buyer can tune thresholds and weights without rewriting the scoring engine.
+The live browser smoke test runs through GitHub Actions against the public production URL.
 
-### 4. Technology and operations
+## 6. Demo data
 
-**Frontend/runtime:** self-contained HTML5, CSS3, vanilla JavaScript
+The included launch-reel project is fictional and synthetic. It is not customer work, a licensed media library, or commercial performance evidence.
 
-**Persistence:** browser localStorage in the current MVP
+## 7. Extension roadmap
 
-**Hosting:** Vercel static deployment
+**Phase 1 - production media**
+- real image/video upload;
+- object storage;
+- asset metadata and thumbnails;
+- real timeline media blocks.
 
-**Quality automation:** GitHub Actions with Node validation and Playwright Chromium live smoke testing
+**Phase 2 - collaborative SaaS**
+- authentication;
+- cloud project storage;
+- shareable review links;
+- comments, approvals and version history.
 
-**Dependencies for the demo:** none; no database, backend API, API key, or build step is required
-
-**License:** MIT
-
-This deliberately simple architecture keeps the MVP easy to audit, transfer, and extend.
-
-### 5. Current commercial status
-
-- Pre-launch
-- Pre-revenue
-- MRR: $0
-- Customers: none claimed
-- TTM revenue: $0
-- Profit: $0
-
-The demo dataset is fictional and exists only to show the workflow.
-
-### 6. Live assets
-
-**Live demo**
-
-https://roleradar-demo.vercel.app
-
-**Source repository**
-
-https://github.com/dmytri595-design/roleradar
-
-The repository includes the working application, sample CSV data, acquisition listing, valuation memo, and automated QA workflows.
-
-### 7. Verification status
-
-The public demo has been browser-smoke-tested with Chromium.
-
-The smoke flow covers:
-- loading the demo;
-- calculating the dashboard;
-- opening Identities;
-- opening Findings;
-- moving a finding into review;
-- saving a policy change;
-- CSV export;
-- JSON export;
-- HTML report export;
-- CSV import;
-- recalculation after import;
-- reset;
-- browser console/page error detection.
-
-The current test suite is intended to catch regressions in the customer-facing flow rather than only syntax errors.
-
-### 8. Buyer fit
-
-Best suited to a buyer that already has one of:
-- security / IT consulting clients;
-- an MSP customer base;
-- an IAM or security product;
-- a compliance-readiness offering;
-- a B2B SaaS distribution channel.
-
-A buyer with distribution can turn the existing workflow into a recurring service or add-on much faster than building the product foundation from scratch.
-
-### 9. Highest-value expansion path
-
-**Phase 1 - production foundation**
-- workspace authentication;
-- Postgres persistence;
-- multi-tenant data model;
-- audit logging.
-
-**Phase 2 - integrations**
-- Okta;
-- Microsoft Entra;
-- Google Workspace.
-
-**Phase 3 - recurring operations**
-- scheduled reviews;
-- notifications;
-- ticketing integrations;
-- policy templates.
+**Phase 3 - AI creator layer**
+- AI script-to-storyboard;
+- caption rewriting;
+- transcript-to-cuts;
+- TTS / voiceover;
+- AI scene suggestions.
 
 **Phase 4 - monetization**
-- Stripe billing;
-- plans by identities/workspaces;
-- consultant / MSP packaging.
+- subscriptions;
+- team seats;
+- render quotas;
+- premium templates;
+- usage-based AI billing.
 
-**Optional product layer**
-- LLM-assisted explanations or report drafting on top of the deterministic engine.
+## 8. Deal scope
 
-### 10. What the buyer receives
+The sale is for the Cutloom product asset as represented in the seller-provided package: source code, demo materials, synthetic sample project, documentation, test workflow and product-specific handoff material.
 
-- full source code;
-- live demo;
-- synthetic sample data;
-- deterministic risk engine;
-- policy editor;
-- remediation workflow;
-- audit/report exports;
-- repository documentation;
-- MIT license;
-- clean one-time handoff structure.
+The buyer should separately confirm whether they require a standalone GitHub repository, Vercel project transfer, custom domain ownership, branding/trademark rights, or post-close development support. None of these are silently implied.
 
-### 11. Commercial terms
+## 9. Limitations disclosed up front
 
-**Asking price:** $4,500 USD
+- no production customers;
+- no revenue;
+- no cloud persistence;
+- no real media storage pipeline;
+- no built-in collaboration;
+- no AI provider integration in the MVP;
+- WebM rendering depends on browser support for the required APIs;
+- the public GitHub product currently lives in a dedicated `cutloom/` directory inside a broader repository; the sale package contains only Cutloom materials.
 
-**Payment model:** One-Time Payment
+## 10. Buyer handoff outcome
 
-No ongoing seller involvement is required by the intended transaction structure.
-
-### 12. Pricing note
-
-The $4,500 ask is an early-stage asset price, not a revenue-multiple valuation. Public market examples used to set the anchor are asking prices rather than verified transaction values. The price is deliberately below the $5,000 range cited by AICRAYS for early-stage micro-SaaS acquisitions and below more developed $8k-$9k marketplace examples reviewed for context.
-
-A likely negotiation zone is approximately $3,500-$4,200, with around $3,000 treated as a fast-sale floor.
-
-### 13. Disclosure
-
-RoleRadar should be presented accurately as a **working MVP / pre-launch / pre-revenue** product.
-
-Do not claim:
-- customers;
-- MRR or ARR;
-- compliance certification;
-- production identity-provider integrations;
-- production security attestations;
-- customer data.
-
-Demo identities are synthetic.
-
-**Review date: October 6, 2026**
+A technical buyer can run the product locally, inspect the complete source, open the public demo, run the included browser smoke test and start replacing synthetic visual treatments with real media infrastructure.
