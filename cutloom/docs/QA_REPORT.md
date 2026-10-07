@@ -25,8 +25,8 @@ The v1.2 smoke suite verifies the production editor rather than only API availab
 
 ## Latest run evidence
 
-GitHub Actions run: `37590619718`  
-Job: `112690953473`  
+GitHub Actions run: `37590809581`  
+Job: `112691579644`  
 Conclusion: `success`
 
 Observed output:
