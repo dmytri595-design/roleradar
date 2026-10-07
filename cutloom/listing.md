@@ -6,7 +6,7 @@
 
 **Tech stack:** self-contained HTML/CSS/JavaScript, Canvas, MediaRecorder, Web Audio API, IndexedDB, localStorage
 
-**Description:** Cutloom is a focused browser-local video creation workspace for turning a script into a storyboard, scene timeline, captions, real local media assets and shareable WebM drafts.
+**Description:** Cutloom is a focused browser-local video creation workspace for turning a script into a storyboard, scene timeline, captions, real local media assets, review exports and shareable WebM drafts.
 
 **Problem solved:** lightweight video teams often jump between notes, storyboards, caption docs and editing software before the narrative is settled. Cutloom gives that early-stage workflow one visual surface.
 
