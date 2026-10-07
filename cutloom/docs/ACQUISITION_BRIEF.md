@@ -6,7 +6,7 @@ Cutloom is a self-contained, browser-local creator-tool MVP for turning a script
 
 The product is intentionally positioned as an **editing workspace**, not a generic admin dashboard. The central experience is a cinematic preview canvas surrounded by scene controls, story structure and timeline context.
 
-**UI / media release:** v1.2  
+**UI / media release:** v1.3  
 **Status:** Working MVP / pre-launch / pre-revenue  
 **Paying users:** 0 claimed  
 **Monthly revenue:** $0 claimed  
@@ -17,7 +17,7 @@ The product is intentionally positioned as an **editing workspace**, not a gener
 
 **Write -> Shape scenes -> Style -> Sequence -> Preview -> Export**
 
-The current demo supports project-level composition and format selection, scene selection from storyboard or timeline, scene editing, 16:9 / 9:16 preview, script editing, visual presets, real local image/video/audio import, per-scene media assignment, cover/contain/fill fitting, video start offsets, audio volume, IndexedDB media persistence, scene reordering, JSON/CSV/HTML exports, and browser-side WebM rendering from media plus optional audio where the required APIs are available.
+The current demo supports project-level composition and format selection, scene selection from storyboard or timeline, scene editing, 16:9 / 9:16 preview, script editing, visual presets, real local image/video/audio import, per-scene media assignment, cover/contain/fill fitting, video start offsets, audio volume with scene-duration clipping, IndexedDB media persistence, scene reordering, JSON/CSV/HTML exports, a self-contained review HTML export with compatible local media embedded, and browser-side WebM rendering from media plus optional audio where the required APIs are available.
 
 ## 3. UX differentiator
 
@@ -95,8 +95,8 @@ The buyer should separately confirm whether they require a standalone GitHub rep
 
 - no production customers;
 - no revenue;
-- no cloud persistence;
-- no cloud media storage or server-side transcoding;
+- no cloud persistence; project metadata and binary media remain browser-local;
+- no cloud media storage or server-side transcoding / MP4 pipeline;
 - no built-in collaboration;
 - no AI provider integration in the MVP;
 - WebM rendering depends on browser support for Canvas capture, MediaRecorder and optional Web Audio APIs;
