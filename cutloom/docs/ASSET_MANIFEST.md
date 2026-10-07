@@ -4,7 +4,7 @@
 **Status:** working MVP / pre-launch / pre-revenue  
 **Asking price:** $4,900 USD one-time  
 **Live demo:** https://cutloom-demo.vercel.app  
-**Standalone sale snapshot:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.1
+**Standalone sale snapshot:** https://github.com/dmytri595-design/roleradar/tree/cutloom-sale-v1.3
 
 ## Included product assets
 
