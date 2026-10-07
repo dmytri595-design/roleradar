@@ -112,6 +112,7 @@ async function makeWebmFixture(page) {
     persistedStateAssets: await page.evaluate(() => JSON.parse(localStorage.getItem('cutloom:project:v2') || '{}').assets?.length || 0)
   }));
 
+  await page.locator('.navbtn[data-screen="edit"]').click();
   const mediaOptions = await page.locator('#mediaSelect option').evaluateAll(options => options.map(o => ({ value: o.value, text: o.textContent })));
   const videoOption = mediaOptions.find(o => o.text.includes('smoke-video.webm'));
   const imageOption = mediaOptions.find(o => o.text.includes('smoke-image.svg'));
@@ -121,6 +122,9 @@ async function makeWebmFixture(page) {
   const audioOption = audioOptions.find(o => o.text.includes('smoke-audio.wav'));
   if (!audioOption) throw new Error('Uploaded audio missing from inspector');
 
+  await page.locator('#mediaSelect').selectOption(imageOption.value);
+  await page.waitForFunction(() => !document.querySelector('#mediaImage')?.classList.contains('media-hidden'));
+  if (!(await page.locator('#mediaImage').getAttribute('src')).startsWith('blob:')) throw new Error('Image object URL not connected');
   await page.locator('#mediaSelect').selectOption(videoOption.value);
   await page.locator('#audioSelect').selectOption(audioOption.value);
   await page.waitForFunction(() => !document.querySelector('#mediaVideo')?.classList.contains('media-hidden'));
