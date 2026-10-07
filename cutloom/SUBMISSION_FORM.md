@@ -21,3 +21,5 @@
 **Payment Model:** One-time acquisition
 
 **Included:** Source, live demo, synthetic sample project, export paths, WebM renderer, browser smoke test and acquisition documentation.
+
+**Upload Documents:** `Cutloom_Acquisition_Brief.pdf` only. Keep the technical handoff, QA report, FAQ and transfer checklist in the GitHub data-room.
