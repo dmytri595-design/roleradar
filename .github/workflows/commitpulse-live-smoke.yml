@@ -1,4 +1,4 @@
-name: CommitPulse live smoke
+name: CommitPulse browser smoke
 
 on:
   workflow_dispatch:
@@ -21,7 +21,9 @@ jobs:
         run: npm install --no-save playwright
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run live smoke
+      - name: Start static server
+        run: python3 -m http.server 4173 --directory commitpulse >/tmp/commitpulse-server.log 2>&1 &
+      - name: Run browser smoke
         env:
-          SMOKE_URL: https://commitpulse-demo.vercel.app
+          SMOKE_URL: http://127.0.0.1:4173
         run: node commitpulse/e2e/live-smoke.cjs
