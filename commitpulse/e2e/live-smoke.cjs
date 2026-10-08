@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+(async()=>{\nconst { chromium } = require('playwright');
 const url=process.env.SMOKE_URL||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext();
@@ -59,4 +59,4 @@ if(!dl.suggestedFilename().endsWith('.csv')) throw new Error('CSV export failed'
 
 if(errors.length) throw new Error('Browser errors: '+errors.join(' | '));
 console.log(JSON.stringify({ok:true,overviewMetrics:5,demoPOs:8,groupedRequests:true,multiPOView:await rows.count(),export:dl.suggestedFilename()}));
-await browser.close();
+await browser.close();\n})().catch(err=>{console.error(err);process.exit(1)});\n
