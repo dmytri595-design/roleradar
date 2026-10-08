@@ -7,13 +7,13 @@ CommitPulse
 HTML, CSS, JavaScript, Browser File API, localStorage
 
 **Description**
-CommitPulse is a focused supplier-confirmation workflow for small manufacturers, distributors and importers. Import an open PO export, identify missing commitments, group supplier follow-ups, preview a no-login confirmation request, capture confirmations/exceptions, and export the resulting dataset.
+CommitPulse is a focused supplier-confirmation workflow for small manufacturers, distributors and importers. Import open POs, identify missing commitments, group selected POs by supplier, create a request, open a no-login supplier page, confirm multiple POs at once, capture exceptions and export the result.
 
 **Problem Solved**
-Procurement teams spend too much time manually chasing suppliers for delivery dates and quantities. CommitPulse gives that follow-up loop a dedicated workflow without requiring the company to replace its ERP.
+Procurement teams spend too much time chasing suppliers for delivery dates and quantities. CommitPulse gives that follow-up loop a dedicated workflow without requiring replacement of the ERP.
 
 **Repository / Demo Link**
-https://github.com/dmytri595-design/roleradar/tree/commitpulse-sale-v1.0
+https://github.com/dmytri595-design/roleradar/tree/commitpulse-sale-v1.1
 https://commitpulse-demo.vercel.app
 
 **Users**
