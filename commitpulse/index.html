@@ -75,7 +75,64 @@ function grouped(){const m=new Map();state.orders.forEach(o=>{if(!m.has(o.suppli
 function renderSupplierSummary(){const total=state.orders.length,responded=state.orders.filter(o=>o.status==='confirmed'||o.status==='exception').length,pct=total?Math.round(responded/total*100):0;document.getElementById('responseRate').textContent=pct+'%';document.getElementById('rateBar').style.width=pct+'%';document.getElementById('supplierSummary').innerHTML=grouped().map(g=>{const r=g.orders.filter(o=>['confirmed','exception'].includes(o.status)).length;return `<div class="row"><div><strong>${g.supplier}</strong><span style="display:block;margin-top:3px">${g.orders.length} open POs</span></div><div class="right"><strong>${Math.round(r/g.orders.length*100)}%</strong><span style="display:block;margin-top:3px">${r} responses</span></div></div>`}).join('')}
 function renderOrders(){const search=(document.getElementById('orderSearch')?.value||'').toLowerCase(),sf=document.getElementById('statusFilter')?.value||'all',rf=document.getElementById('riskFilter')?.value||'all';const rows=state.orders.filter(o=>{const hay=[o.id,o.supplier,o.sku].join(' ').toLowerCase();if(search&&!hay.includes(search))return false;if(sf!=='all'&&o.status!==sf)return false;const d=daysFrom(o.required);if(rf==='overdue'&&d>=0)return false;if(rf==='soon'&&(d<0||d>7))return false;return true});document.getElementById('ordersBody').innerHTML=rows.length?rows.map(o=>`<tr><td><input type="checkbox" data-check="${escapeAttr(o.id)}" /></td><td><strong>${escapeHTML(o.id)}</strong><div class="muted">${escapeHTML(o.sku)} · ${o.qty} units</div></td><td>${escapeHTML(o.supplier)}<div class="muted">${escapeHTML(o.email)}</div></td><td>${o.lines}</td><td>${fmt(o.required)}<div class="muted">${daysFrom(o.required)<0?'overdue':daysFrom(o.required)+'d left'}</div></td><td>${o.confirmed?fmt(o.confirmed):'—'}</td><td>${statusHTML(o.status)}</td><td>${fmt(o.lastTouch)}</td></tr>`).join(''):`<tr><td colspan="8"><div class="empty"><strong>No matching POs</strong>Adjust the filters or import another export.</div></td></tr>`}
 function renderSuppliers(){document.getElementById('suppliersBody').innerHTML=grouped().map(g=>{const awaiting=g.orders.filter(o=>['waiting','sent'].includes(o.status)).length,confirmed=g.orders.filter(o=>o.status==='confirmed').length,exceptions=g.orders.filter(o=>o.status==='exception').length,responded=confirmed+exceptions,pct=Math.round(responded/g.orders.length*100);return `<tr><td><strong>${escapeHTML(g.supplier)}</strong><div class="muted">${escapeHTML(g.orders[0].email)}</div></td><td>${g.orders.length}</td><td>${awaiting}</td><td>${confirmed}</td><td>${exceptions}</td><td><strong>${pct}%</strong><div class="progress" style="margin-top:6px"><span style="width:${pct}%"></span></div></td></tr>`}).join('')}
-function renderSupplierView(){const target=state.orders.filter(o=>['waiting','sent'].includes(o.status));if(!target.length){document.getElementById('supplierPanel').innerHTML=`<div class="card panel"><div class="successbox"><strong>All current requests have a response.</strong>There are no supplier confirmations waiting right now.</div></div>`;return}const idx=Math.min(Math.max(supplierIndex,0),target.length-1),order=target[idx];supplierIndex=idx;document.getElementById('supplierPanel').innerHTML=`<div class="supplier-shell"><div class="supplier-banner"><div class="eyebrow">No login required</div><div style="font-size:23px;font-weight:850;margin-top:5px">Confirmation request · ${escapeHTML(order.supplier)}</div><div style="opacity:.78;font-size:12px;margin-top:5px">Request reference ${escapeHTML(order.id)} · generated ${fmt(order.lastTouch)}</div></div><div class="supplier-body"><div class="supplier-info"><div class="mini"><div class="k">Purchase order</div><div class="v">${escapeHTML(order.id)}</div></div><div class="mini"><div class="k">Required date</div><div class="v">${fmt(order.required)}</div></div><div class="mini"><div class="k">Quantity</div><div class="v">${order.qty.toLocaleString()} units</div></div></div><div class="supplier-lines"><div class="sline"><div><div class="slabel">SKU</div><div class="sval">${escapeHTML(order.sku)}</div></div><div><div class="slabel">Lines</div><div class="sval">${order.lines}</div></div><div><div class="slabel">Requested</div><div class="sval">${fmt(order.required)}</div></div><div><div class="slabel">Your date</div><input class="field" id="supplierDate" type="date" value="${escapeAttr(order.confirmed||order.required)}"></div></div></div><div style="margin-top:14px"><label class="slabel">Note / change reason</label><textarea id="supplierNote" class="field" style="width:100%;height:90px;margin-top:5px" placeholder="Optional note for the buyer">${escapeHTML(order.note||'')}</textarea></div><div class="supplier-actions"><button class="btn" id="supplierException">Can't meet this date</button><button class="btn primary" id="supplierConfirm">Confirm commitment</button></div><div class="muted" style="margin-top:12px">Demo behavior: the response is stored locally so the buyer dashboard can show the end-to-end workflow.</div></div></div>`;document.getElementById('supplierConfirm').onclick=()=>respondSupplier(order,'confirmed');document.getElementById('supplierException').onclick=()=>respondSupplier(order,'exception')}
+function supplierGroups(){
+  const m=new Map();
+  state.orders.filter(o=>['waiting','sent'].includes(o.status)).forEach(o=>{
+    if(!m.has(o.supplier))m.set(o.supplier,{supplier:o.supplier,email:o.email,orders:[]});
+    m.get(o.supplier).orders.push(o);
+  });
+  return [...m.values()];
+}
+function renderSupplierView(){
+  const groups=supplierGroups();
+  if(!groups.length){
+    document.getElementById('supplierPanel').innerHTML=`<div class="card panel"><div class="successbox"><strong>All current requests have a response.</strong>There are no supplier confirmations waiting right now.</div></div>`;
+    return;
+  }
+  const qs=new URLSearchParams(location.search);
+  const po=qs.get('po');
+  let groupIndex=Math.min(Math.max(supplierIndex,0),groups.length-1);
+  if(po){
+    const found=groups.findIndex(g=>g.orders.some(o=>o.id===po));
+    if(found>-1)groupIndex=found;
+  }
+  supplierIndex=groupIndex;
+  const g=groups[groupIndex];
+  document.getElementById('supplierPanel').innerHTML=`<div class="supplier-shell">
+  <div class="supplier-banner"><div class="eyebrow">No login required</div>
+  <div style="font-size:23px;font-weight:850;margin-top:5px">Confirmation request · ${escapeHTML(g.supplier)}</div>
+  <div style="opacity:.78;font-size:12px;margin-top:5px">${g.orders.length} open PO${g.orders.length>1?'s':''} · ${escapeHTML(g.email)}</div></div>
+  <div class="supplier-body">
+  <div class="supplier-info"><div class="mini"><div class="k">Supplier</div><div class="v">${escapeHTML(g.supplier)}</div></div>
+  <div class="mini"><div class="k">Open POs</div><div class="v">${g.orders.length}</div></div>
+  <div class="mini"><div class="k">Request link</div><div class="v" style="font-size:11px">?view=supplier</div></div></div>
+  <div class="supplier-lines">${g.orders.map(o=>`<div class="sline" data-supplier-po="${escapeAttr(o.id)}">
+    <div><div class="slabel">PO / SKU</div><div class="sval">${escapeHTML(o.id)} · ${escapeHTML(o.sku)}</div></div>
+    <div><div class="slabel">Qty</div><div class="sval">${o.qty.toLocaleString()}</div></div>
+    <div><div class="slabel">Required</div><div class="sval">${fmt(o.required)}</div></div>
+    <div><div class="slabel">Your date</div><input class="field" type="date" data-supplier-date="${escapeAttr(o.id)}" value="${escapeAttr(o.required)}"></div>
+  </div>`).join('')}</div>
+  <div style="margin-top:14px"><label class="slabel">Message to buyer</label><textarea id="supplierNote" class="field" style="width:100%;height:90px;margin-top:5px" placeholder="Optional note or change reason"></textarea></div>
+  <div class="supplier-actions"><button class="btn" id="supplierException">Cannot meet these dates</button><button class="btn primary" id="supplierConfirm">Confirm ${g.orders.length} PO${g.orders.length>1?'s':''}</button></div>
+  <div class="muted" style="margin-top:12px">Demo behavior: the response is stored locally. A production release would issue a signed, one-time supplier token.</div>
+  </div></div>`;
+  document.getElementById('supplierConfirm').onclick=()=>respondSupplierGroup(g,'confirmed');
+  document.getElementById('supplierException').onclick=()=>respondSupplierGroup(g,'exception');
+}
+function respondSupplierGroup(group,status){
+  const note=document.getElementById('supplierNote').value.trim();
+  group.orders.forEach(o=>{
+    const input=document.querySelector(`[data-supplier-date="${CSS.escape(o.id)}"]`);
+    o.confirmed=input?.value||o.required;
+    o.note=note;
+    o.status=status;
+    o.lastTouch=iso(today);
+  });
+  state.activity.unshift({ts:'2026-10-08 09:18',type:status==='confirmed'?'Confirmed':'Exception',detail:`${group.supplier} responded for ${group.orders.length} open PO${group.orders.length>1?'s':''}`});
+  persist();
+  toast(status==='confirmed'?'Supplier commitments recorded':'Supplier exception raised');
+  render();
+}
 function respondSupplier(order,status){const date=document.getElementById('supplierDate').value||order.required,note=document.getElementById('supplierNote').value.trim();order.confirmed=date;order.note=note;order.status=status;order.lastTouch=iso(today);state.activity.unshift({ts:'2026-10-08 09:18',type:status==='confirmed'?'Confirmed':'Exception',detail:`${order.id} · ${order.supplier}${status==='confirmed'?` confirmed ${fmt(date)}`:` proposed ${fmt(date)}`}`});persist();toast(status==='confirmed'?'Commitment recorded':'Exception raised for buyer');render()}
 function renderActivity(){document.getElementById('activityList').innerHTML=state.activity.map(a=>`<div class="row"><div><strong>${escapeHTML(a.type)}</strong><span style="display:block;margin-top:3px">${escapeHTML(a.detail)}</span></div><div class="right"><span>${escapeHTML(a.ts)}</span></div></div>`).join('')||`<div class="empty"><strong>No activity yet</strong>Actions will appear here as the workflow runs.</div>`}
 function selectedIds(){return [...document.querySelectorAll('[data-check]:checked')].map(x=>x.dataset.check)}
