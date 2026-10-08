@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 
-const url = process.env.SMOKE_URL || 'https://commitpulse-demo.vercel.app';
+const url = process.env.SMOKE_URL || 'http://127.0.0.1:4173';
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const errors = [];
@@ -16,28 +16,28 @@ if (metrics !== 4 || openText.trim() !== '8') throw new Error(\`Unexpected overv
 
 await page.click('.navbtn[data-screen="orders"]');
 await page.waitForSelector('#ordersBody tr');
-const orderRows = await page.locator('#ordersBody tr').count();
-if (orderRows !== 8) throw new Error(\`Expected 8 demo POs, got \${orderRows}\`);
+if (await page.locator('#ordersBody tr').count() !== 8) throw new Error('Expected 8 demo POs');
 
 await page.locator('[data-check="PO-1842"]').check();
 await page.click('#ordersSendBtn');
 await page.waitForSelector('#batchModal.open');
 if (!(await page.locator('#batchPreview').innerText()).includes('Nordic Components AS')) throw new Error('Batch preview missing Nordic supplier');
 await page.click('#confirmBatchBtn');
-await page.waitForTimeout(100);
+
 await page.click('.navbtn[data-screen="supplier"]');
 await page.waitForSelector('.supplier-shell');
 if (!(await page.locator('.supplier-shell').innerText()).includes('Confirmation request')) throw new Error('Supplier request page did not render');
 
-const firstDate = page.locator('[data-supplier-date]').first();
-await firstDate.fill('2026-10-21');
+await page.locator('[data-supplier-date]').first().fill('2026-10-21');
 await page.locator('#supplierConfirm').click();
 await page.waitForTimeout(100);
 
 await page.reload({ waitUntil: 'networkidle' });
 await page.waitForSelector('#metricCards .metric');
-const persistedOrder = await page.locator('[data-check="PO-1842"]');
-if (await persistedOrder.count() !== 1) throw new Error('PO state did not survive reload');
+await page.click('.navbtn[data-screen="orders"]');
+await page.waitForSelector('#ordersBody tr');
+const poText = await page.locator('body').innerText();
+if (!poText.includes('PO-1842') || !poText.includes('Confirmed')) throw new Error('PO confirmation did not persist');
 
 await page.click('.navbtn[data-screen="import"]');
 await page.setInputFiles('#csvInput', {
@@ -57,5 +57,5 @@ const download = await dl;
 if (!download.suggestedFilename().endsWith('.csv')) throw new Error('Export did not create CSV');
 
 if (errors.length) throw new Error(\`Browser errors: \${errors.join(' | ')}\`);
-console.log(JSON.stringify({ok:true,url,metrics,orderRows,exported:download.suggestedFilename()}));
+console.log(JSON.stringify({ok:true,url,metrics,exported:download.suggestedFilename()}));
 await browser.close();
