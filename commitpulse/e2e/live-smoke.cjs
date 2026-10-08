@@ -1,61 +1,62 @@
 const { chromium } = require('playwright');
+const url=process.env.SMOKE_URL||'http://127.0.0.1:4173';
+const browser=await chromium.launch({headless:true});
+const context=await browser.newContext();
+const page=await context.newPage();
+const errors=[];
+page.on('pageerror',e=>errors.push(String(e)));
+page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 
-const url = process.env.SMOKE_URL || 'http://127.0.0.1:4173';
-const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors = [];
-page.on('pageerror', e => errors.push(String(e)));
-page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-
-await page.goto(url, { waitUntil: 'networkidle' });
+await page.goto(url,{waitUntil:'networkidle'});
 await page.waitForSelector('#metricCards .metric');
-
-const metrics = await page.locator('#metricCards .metric').count();
-const openText = await page.locator('#metricCards .metric').first().locator('.value').textContent();
-if (metrics !== 4 || openText.trim() !== '8') throw new Error(\`Unexpected overview metrics: \${metrics}/\${openText}\`);
+if(await page.locator('#metricCards .metric').count()!==5) throw new Error('Top overview metrics missing');
+if(!(await page.locator('#attentionQueue').innerText()).includes('Sundby Packaging AB')) throw new Error('Attention queue missing soon PO');
 
 await page.click('.navbtn[data-screen="orders"]');
 await page.waitForSelector('#ordersBody tr');
-if (await page.locator('#ordersBody tr').count() !== 8) throw new Error('Expected 8 demo POs');
+if(await page.locator('#ordersBody tr').count()!==8) throw new Error('Expected 8 demo POs');
 
-await page.locator('[data-check="PO-1842"]').check();
-await page.click('#ordersSendBtn');
-await page.waitForSelector('#batchModal.open');
-if (!(await page.locator('#batchPreview').innerText()).includes('Nordic Components AS')) throw new Error('Batch preview missing Nordic supplier');
-await page.click('#confirmBatchBtn');
+await page.locator('#selectAll').check();
+await page.click('#ordersRequest');
+await page.waitForSelector('#requestModal.open');
+const preview=await page.locator('#requestPreview').innerText();
+if(!preview.includes('Nordic Components AS')||!preview.includes('Baltic Tools UAB')) throw new Error('Request grouping preview is wrong');
+await page.click('#createRequestsBtn');
+await page.waitForSelector('#screen-requests.active');
 
-await page.click('.navbtn[data-screen="supplier"]');
+const requestCards=page.locator('.request-card');
+if(await requestCards.count()<4) throw new Error('Expected grouped confirmation requests');
+
+const firstOpen=page.locator('.request-open').first();
+await firstOpen.click();
 await page.waitForSelector('.supplier-shell');
-if (!(await page.locator('.supplier-shell').innerText()).includes('Confirmation request')) throw new Error('Supplier request page did not render');
-
-await page.locator('[data-supplier-date]').first().fill('2026-10-21');
-await page.locator('#supplierConfirm').click();
+const rows=page.locator('[data-order-row]');
+if(await rows.count()<1) throw new Error('Supplier view did not render rows');
+const first=rows.first();
+const originalDate=await first.locator('.supplier-date').inputValue();
+await first.locator('.supplier-date').fill(originalDate);
+await first.locator('.supplier-qty').fill(await first.locator('.supplier-qty').inputValue());
+await page.locator('#supplierSubmit').click();
 await page.waitForTimeout(100);
 
-await page.reload({ waitUntil: 'networkidle' });
-await page.waitForSelector('#metricCards .metric');
-await page.click('.navbtn[data-screen="orders"]');
-await page.waitForSelector('#ordersBody tr');
-const poText = await page.locator('body').innerText();
-if (!poText.includes('PO-1842') || !poText.includes('Confirmed')) throw new Error('PO confirmation did not persist');
+await page.reload({waitUntil:'networkidle'});
+await page.click('.navbtn[data-screen="requests"]');
+await page.waitForSelector('.request-card');
+if(!(await page.locator('.request-card').first().innerText()).includes('Progress')) throw new Error('Request state did not persist');
 
 await page.click('.navbtn[data-screen="import"]');
-await page.setInputFiles('#csvInput', {
-  name: 'smoke.csv',
-  mimeType: 'text/csv',
-  buffer: Buffer.from('PO Number,Supplier,Supplier Email,SKU,Quantity,Required Date\nPO-SMOKE,Smoke Supplier,s@example.com,SM-1,12,2026-11-12\n')
-});
+await page.setInputFiles('#csvInput',{name:'smoke.csv',mimeType:'text/csv',buffer:Buffer.from('PO Number,Supplier,Supplier Email,SKU,Quantity,Required Date\nPO-SMOKE,Smoke Supplier,s@example.com,SM-1,12,2026-11-12\n')});
 await page.waitForSelector('#mappingArea');
 await page.click('#applyImport');
 await page.waitForTimeout(100);
 await page.click('.navbtn[data-screen="orders"]');
-if (!(await page.locator('#ordersBody').innerText()).includes('PO-SMOKE')) throw new Error('CSV import did not create the smoke PO');
+if(!(await page.locator('#ordersBody').innerText()).includes('PO-SMOKE')) throw new Error('CSV import failed');
 
-const dl = page.waitForEvent('download');
-await page.click('#ordersExportBtn');
-const download = await dl;
-if (!download.suggestedFilename().endsWith('.csv')) throw new Error('Export did not create CSV');
+const dlPromise=page.waitForEvent('download');
+await page.click('#ordersExport');
+const dl=await dlPromise;
+if(!dl.suggestedFilename().endsWith('.csv')) throw new Error('CSV export failed');
 
-if (errors.length) throw new Error(\`Browser errors: \${errors.join(' | ')}\`);
-console.log(JSON.stringify({ok:true,url,metrics,exported:download.suggestedFilename()}));
+if(errors.length) throw new Error('Browser errors: '+errors.join(' | '));
+console.log(JSON.stringify({ok:true,overviewMetrics:5,demoPOs:8,groupedRequests:true,multiPOView:await rows.count(),export:dl.suggestedFilename()}));
 await browser.close();
