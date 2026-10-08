@@ -21,18 +21,18 @@ await page.locator('#selectAll').check();
 await page.click('#ordersRequest');
 await page.waitForSelector('#requestModal.open');
 const preview=await page.locator('#requestPreview').innerText();
-if(!preview.includes('Nordic Components AS')||!preview.includes('Baltic Tools UAB')) throw new Error('Request grouping preview is wrong');
+if(!preview.includes('Nordic Components AS')||!preview.includes('Sundby Packaging AB')) throw new Error('Request grouping preview is wrong');
 await page.click('#createRequestsBtn');
 await page.waitForSelector('#screen-requests.active');
 
 const requestCards=page.locator('.request-card');
 if(await requestCards.count()<4) throw new Error('Expected grouped confirmation requests');
 
-const firstOpen=page.locator('.request-open').first();
+const firstOpen=page.locator('.request-open[data-id="RQ-1001"]');
 await firstOpen.click();
 await page.waitForSelector('.supplier-shell');
 const rows=page.locator('[data-order-row]');
-if(await rows.count()<1) throw new Error('Supplier view did not render rows');
+if(await rows.count()!==2) throw new Error('Multi-PO supplier request did not render 2 rows');
 const first=rows.first();
 const originalDate=await first.locator('.supplier-date').inputValue();
 await first.locator('.supplier-date').fill(originalDate);
