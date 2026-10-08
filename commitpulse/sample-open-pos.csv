@@ -1,0 +1,4 @@
+PO Number,Supplier,Supplier Email,SKU,Quantity,Required Date
+PO-2001,Nordic Components AS,purchasing@nordic-components.example,BRG-991,240,2026-10-24
+PO-2002,Sundby Packaging AB,sales@sundby-packaging.example,BOX-501,1200,2026-10-26
+PO-2003,Arctic Industrial Oy,orders@arctic-industrial.example,VAL-902,75,2026-11-02

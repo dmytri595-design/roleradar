@@ -1,0 +1,27 @@
+name: CommitPulse live smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'commitpulse/**'
+      - '.github/workflows/commitpulse-live-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run live smoke
+        env:
+          SMOKE_URL: https://commitpulse-demo.vercel.app
+        run: node commitpulse/e2e/live-smoke.cjs
