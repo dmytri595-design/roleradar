@@ -59,4 +59,5 @@ if(!dl.suggestedFilename().endsWith('.csv')) throw new Error('CSV export failed'
 
 if(errors.length) throw new Error('Browser errors: '+errors.join(' | '));
 console.log(JSON.stringify({ok:true,overviewMetrics:5,demoPOs:8,groupedRequests:true,multiPOView:await rows.count(),export:dl.suggestedFilename()}));
-await browser.close();\n})().catch(err=>{console.error(err);process.exit(1)});\n
+await browser.close();
+})().catch(err=>{console.error(err);process.exit(1)});
