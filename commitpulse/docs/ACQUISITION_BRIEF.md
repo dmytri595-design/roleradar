@@ -1,36 +1,34 @@
 # CommitPulse Acquisition Brief
 
 ## Executive summary
-CommitPulse is a narrowly scoped B2B procurement workflow designed to eliminate repetitive supplier chasing around open purchase orders.
+CommitPulse is a narrow B2B workflow that closes the gap between an existing PO system and a reliable supplier commitment.
 
-## Workflow
-Import → Triage → Batch by supplier → Supplier confirmation → Exceptions → Export
+## v1.1 product loop
+1. Import an open-PO CSV export.
+2. Review near-term and exception records.
+3. Select POs or work supplier-by-supplier.
+4. Create one request per supplier.
+5. Share/copy the supplier link.
+6. Supplier reviews multiple POs and confirms date + quantity for each.
+7. Any changed date, quantity or note becomes an exception.
+8. Buyer sees request progress and audit events.
+9. Export the normalized PO dataset.
 
-The current demo is intentionally browser-local so the core workflow is easy to evaluate without account setup or infrastructure.
-
-## Product surface
-- Overview
-- Open POs
-- Suppliers
-- Import / column mapping
-- Supplier View
-- Activity audit trail
-- CSV export
-
-## Current differentiator
-The product is not a procurement suite. It is the missing confirmation loop between an existing PO system and a reliable supplier commitment.
+## Differentiation
+CommitPulse is intentionally not an ERP, supplier master-data system, inventory suite or procurement platform. It is a thin confirmation loop that can sit beside those systems.
 
 ## Technical handoff
-The static UI/state layer is separated conceptually from the future persistence and communications adapters. A buyer can connect:
-- database/authentication
-- signed supplier tokens
+Current state is browser-local. Production adapter points:
+- PO repository
+- request/token service
 - transactional email
 - scheduled reminders
-- ERP/CSV sync
-- role-based access
+- authentication/RBAC
+- ERP sync
+- server-side audit store
 
-## Limitations
-No email provider, cloud database, ERP write-back, authenticated supplier token or multi-user collaboration is included in v1.0.
+## Current limitations
+No production email, signed request tokens, cloud database, multi-user workspace or ERP write-back in v1.1.
 
 ## Commercial position
 Working MVP / pre-launch / pre-revenue. Suggested asking price: $4,900 USD one-time.
