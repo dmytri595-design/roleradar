@@ -2,39 +2,36 @@
 
 **Supplier confirmations without the chasing.**
 
-CommitPulse is a narrow procurement workflow product for small manufacturers, distributors and importers that already have an ERP or spreadsheet export but still chase suppliers manually for delivery-date and quantity commitments.
+CommitPulse is a focused procurement workflow for small manufacturers, distributors and importers that already have an ERP or spreadsheet export but still chase suppliers manually for delivery-date and quantity commitments.
 
-## Product workflow
-1. Import an open-PO CSV export.
-2. Review which POs are waiting, sent, confirmed or exceptions.
-3. Group follow-ups by supplier.
-4. Preview a no-login supplier request.
-5. Supplier confirms all open POs in that request, or raises an exception with a note.
-6. Export the normalized result back to CSV.
+## Core workflow
+Import open POs → triage → select → create grouped supplier requests → supplier confirms multiple POs in one response → exceptions are surfaced → export.
+
+## v1.1 highlights
+- Multi-PO supplier confirmation requests.
+- Persistent request center with request IDs.
+- Copyable supplier links using `?view=supplier&request=RQ-XXXX`.
+- Supplier can confirm quantity + date for every PO in one request.
+- Exceptions are automatically identified when date, quantity, or note changes.
+- Request status and progress tracking.
+- Select-all, filters and correct visible-row CSV export.
+- Legacy v1 workspace migration.
+- Responsive operations UI with clear buyer/supplier separation.
 
 ## Current implementation
-- Self-contained HTML/CSS/JavaScript MVP.
-- Browser-local persistence with localStorage.
+- Self-contained HTML/CSS/JavaScript.
+- localStorage persistence.
 - CSV import with column mapping and preview.
-- Supplier grouping and response-rate view.
-- Batch follow-up workflow.
-- Supplier request URL shape: ?view=supplier&po=<PO_NUMBER>.
+- Supplier grouping and response-rate views.
+- Request center and audit trail.
 - No external API dependency for the demo.
 - Synthetic demo data only.
 
-## Important limitation
-The live demo simulates delivery of supplier requests locally. It does not send email, authenticate supplier tokens, provide multi-user cloud storage, or write back to an ERP. Those are the production integration layers an acquirer can connect.
-
-## Local run
-Open index.html in a modern browser or serve the folder with any static web server.
+## Honest limitations
+The live demo simulates request delivery locally. It does not send email, authenticate supplier tokens, provide shared cloud persistence, or write back to an ERP. Production should add signed expiring links, authenticated storage, transactional email and ERP adapters.
 
 ## Release position
 Working MVP / pre-launch / pre-revenue. No customer, user, revenue, or integration claims are made.
 
 ## Commercial
 Suggested acquisition asking price: **$4,900 USD one-time**.
-
-## Links
-Live demo: https://commitpulse-demo.vercel.app
-Repository: https://github.com/dmytri595-design/roleradar/tree/main/commitpulse
-Standalone sale snapshot: https://github.com/dmytri595-design/roleradar/tree/commitpulse-sale-v1.0
