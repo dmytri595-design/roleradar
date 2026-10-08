@@ -39,11 +39,13 @@ await first.locator('.supplier-date').fill(originalDate);
 await first.locator('.supplier-qty').fill(await first.locator('.supplier-qty').inputValue());
 await page.locator('#supplierSubmit').click();
 await page.waitForTimeout(100);
-
+const storedBeforeReload=await page.evaluate(()=>JSON.parse(localStorage.getItem('commitpulse:workspace:v2')));
+if(!storedBeforeReload.requests.some(r=>r.id==='RQ-1001'&&r.status==='confirmed')) throw new Error('Request state was not written to localStorage');
 await page.reload({waitUntil:'networkidle'});
+const storedAfterReload=await page.evaluate(()=>JSON.parse(localStorage.getItem('commitpulse:workspace:v2')));
+if(!storedAfterReload.requests.some(r=>r.id==='RQ-1001'&&r.status==='confirmed')) throw new Error('Request state did not persist after reload');
 await page.click('.navbtn[data-screen="requests"]');
 await page.waitForSelector('.request-card');
-if(!(await page.locator('.request-card').first().innerText()).includes('Progress')) throw new Error('Request state did not persist');
 
 await page.click('.navbtn[data-screen="import"]');
 await page.setInputFiles('#csvInput',{name:'smoke.csv',mimeType:'text/csv',buffer:Buffer.from('PO Number,Supplier,Supplier Email,SKU,Quantity,Required Date\nPO-SMOKE,Smoke Supplier,s@example.com,SM-1,12,2026-11-12\n')});
