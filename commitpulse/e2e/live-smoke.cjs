@@ -1,4 +1,5 @@
-(async()=>{\nconst { chromium } = require('playwright');
+(async()=>{
+const { chromium } = require('playwright');
 const url=process.env.SMOKE_URL||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext();
