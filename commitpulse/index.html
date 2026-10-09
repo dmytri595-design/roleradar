@@ -121,7 +121,7 @@ init();
 <script id="commitpulse-v12">
 (function(){
 const $=function(s,r){return (r||document).querySelector(s)};
-const $=function(s,r){return Array.from((r||document).querySelectorAll(s))};
+const $$=function(s,r){return Array.from((r||document).querySelectorAll(s))};
 const dayIso=function(){return new Date().toISOString().slice(0,10)};
 const offsetDate=function(date,days){const d=new Date((date||dayIso())+'T00:00:00');d.setDate(d.getDate()+Number(days||0));return d.toISOString().slice(0,10)};
 const DEFAULT_SETTINGS={workspaceName:'Northstar Procurement',reminderDays:3,dueSoonDays:7,currency:'USD'};
