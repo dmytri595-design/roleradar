@@ -59,6 +59,52 @@ const dlPromise=page.waitForEvent('download');
 await page.click('#ordersExport');
 const dl=await dlPromise;
 if(!dl.suggestedFilename().endsWith('.csv')) throw new Error('CSV export failed');
+await page.click('.navbtn[data-screen="exceptions"]');
+await page.waitForSelector('#v12ExceptionList');
+if (!(await page.locator('#v12ExceptionList').innerText()).includes('PO-1877')) throw new Error('Exception Desk missing known exception');
+await page.locator('[data-accept-exception="PO-1877"]').click();
+if (!(await page.locator('#v12ExceptionList').innerText()).includes('No supplier exceptions')) throw new Error('Exception acceptance did not clear the issue');
+
+await page.click('.navbtn[data-screen="reminders"]');
+await page.waitForSelector('#v12ReminderList');
+if (await page.locator('#v12ReminderList [data-draft-po]').count() < 1) throw new Error('Reminder queue did not show stale follow-ups');
+await page.locator('#v12ReminderList [data-draft-po]').first().click();
+await page.waitForSelector('#v12Modal.open');
+if (!(await page.locator('#v12ModalContent').innerText()).includes('does not send email')) throw new Error('Email draft limitations not visible');
+await page.locator('#v12ModalClose').click();
+
+await page.click('.navbtn[data-screen="settings"]');
+await page.fill('#v12WorkspaceName','Smoke Workspace');
+await page.fill('#v12ReminderDays','4');
+await page.click('#v12SaveSettings');
+if (!(await page.locator('.topbar .pill').innerText()).includes('Smoke Workspace')) throw new Error('Workspace name did not update');
+
+await page.click('.navbtn[data-screen="orders"]');
+await page.click('#v12NewPo');
+await page.fill('#v12PoId','PO-SMOKE-MANUAL');
+await page.fill('#v12PoSupplier','Manual Test Supplier');
+await page.fill('#v12PoEmail','manual@example.com');
+await page.fill('#v12PoSku','TEST-01');
+await page.fill('#v12PoQty','17');
+await page.fill('#v12PoRequired','2026-11-20');
+await page.fill('#v12PoPrice','4.25');
+await page.click('#v12SavePo');
+if (!(await page.locator('#ordersBody').innerText()).includes('PO-SMOKE-MANUAL')) throw new Error('Manual PO create failed');
+
+await page.click('.navbtn[data-screen="analytics"]');
+await page.waitForSelector('#v12AnalyticsCards .v12stat');
+if (await page.locator('#v12AnalyticsCards .v12stat').count() !== 4) throw new Error('Analytics metrics did not render');
+const reportDownloadPromise=page.waitForEvent('download');
+await page.click('#v12PrintReport');
+const reportDownload=await reportDownloadPromise;
+if (!reportDownload.suggestedFilename().endsWith('.html')) throw new Error('Operations report download failed');
+
+await page.click('.navbtn[data-screen="settings"]');
+const backupDownloadPromise=page.waitForEvent('download');
+await page.click('#v12BackupBtn');
+const backupDownload=await backupDownloadPromise;
+if (!backupDownload.suggestedFilename().endsWith('.json')) throw new Error('JSON backup download failed');
+
 
 if(errors.length) throw new Error('Browser errors: '+errors.join(' | '));
 console.log(JSON.stringify({ok:true,overviewMetrics:5,demoPOs:8,groupedRequests:true,multiPOView:await rows.count(),export:dl.suggestedFilename()}));
