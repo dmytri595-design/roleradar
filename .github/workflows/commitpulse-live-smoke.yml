@@ -17,6 +17,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check embedded JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('commitpulse/index.html').read_text()
+          scripts = re.findall(r'<script\\b[^>]*>(.*?)</script>', html, flags=re.S|re.I)
+          assert len(scripts) >= 2, f'Expected product and v1.2 scripts, got {len(scripts)}'
+          for i, script in enumerate(scripts):
+              Path(f'/tmp/commitpulse-inline-{i}.js').write_text(script)
+          print(f'Extracted {len(scripts)} inline script blocks')
+          PY
+          for f in /tmp/commitpulse-inline-*.js; do node --check "$f"; done
       - name: Install Playwright
         run: npm install --no-save playwright
       - name: Install Chromium
