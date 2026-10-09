@@ -1,38 +1,30 @@
-# Technical Handoff
+# Technical Handoff — CommitPulse v1.2
 
-## Architecture
-index.html contains the complete front-end MVP.
+## Runtime
+- Single-page static app: `commitpulse/index.html`
+- State: localStorage key `commitpulse:workspace:v2`
+- Request relationships use request IDs with arrays of PO IDs.
+- Binary uploads are not used; imports are CSV text.
 
-State:
-- commitpulse:workspace:v1 in localStorage.
-- demo object supplies synthetic open-PO records.
+## Features
+- Buyer dashboard
+- CSV import and mapping
+- PO create/edit
+- Supplier grouping and request creation
+- Supplier-side multi-PO response
+- Exception Desk
+- Reminder queue and email-draft generation
+- Analytics and report export
+- JSON backup/restore
+- Workspace settings and audit history
 
-Core functions:
-- load / persist for state.
-- render* functions for screen rendering.
-- parseCSV / handleCSV / applyImport for imports.
-- openBatch for supplier-grouped confirmation batches.
-- renderSupplierView / respondSupplierGroup for supplier responses.
-- exportCSV for normalized export.
+## Production replacement interfaces
+- WorkspaceRepository.load/save
+- PurchaseOrderRepository.list/create/update/import/export
+- ConfirmationRequestRepository.create/getByToken/updateStatus
+- MailProvider.createAndSend
+- ReminderScheduler.schedule
+- ERPAdapter.pullOpenPOs/pushSupplierCommitment
 
-## Request-link model
-The demo uses:
-?view=supplier&po=PO-1842
-
-In production, replace this with a signed, expiring supplier token and a server-side request record.
-
-## Production adapter boundary
-Suggested interfaces:
-- PORepository.listOpenPOs()
-- ConfirmationRequest.create()
-- ConfirmationRequest.send()
-- ConfirmationRequest.getByToken()
-- SupplierResponse.submit()
-- PORepository.exportOrSync()
-
-## Security priorities for production
-- signed and expiring request tokens
-- server-side validation
-- audit timestamps from trusted server time
-- buyer workspace authorization
-- rate limiting on public supplier endpoints
+## Security priorities
+Use authenticated buyer workspaces, strict server-side validation, signed expiring supplier tokens, rate limiting, trusted timestamps, tenant isolation, and access audit. Do not expose localStorage data as a security boundary.
