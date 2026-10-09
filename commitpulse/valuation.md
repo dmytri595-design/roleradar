@@ -1,33 +1,20 @@
-# CommitPulse — Valuation
+# CommitPulse — Valuation Notes v1.2
 
-## Why this asset can be acquired
-CommitPulse targets a narrow workflow with an obvious operational outcome: reduce manual supplier follow-up around open purchase orders.
+## Asset position
+A working, narrow B2B workflow with clear buyer pain: collecting reliable supplier delivery-date and quantity commitments without replacing existing systems.
 
-The asset is intentionally small:
-- single workflow
-- no vendor lock-in
-- static deployment
-- easy to inspect
-- clear adapter points for production infrastructure
-- no customer-data dependency
+## Included value
+- End-to-end buyer and supplier-side demo
+- CSV import/export and validation
+- Exception triage and acceptance/reopen workflow
+- Reminder cadence, follow-up logging and copy-ready supplier emails
+- Analytics and supplier scorecards
+- Manual PO management, priorities and editable workspace rules
+- JSON backup/restore plus activity and operations reports
+- Smoke-tested release workflow and acquisition documentation
 
-## Suggested asking price
-**$4,900 USD one-time**
+## Asking price
+**$4,900 USD one-time.** This is a seller asking price, not a verified valuation or revenue multiple.
 
-This is a seller positioning decision, not a claim of market valuation or a revenue multiple.
-
-## Main buyer profiles
-- procurement software company
-- ERP add-on vendor
-- supply-chain SaaS company
-- vertical SaaS studio
-- agency adding a procurement workflow product
-- founder looking for a focused B2B micro-SaaS
-
-## Expansion paths
-1. Authenticated signed supplier links.
-2. Email delivery and reminder schedules.
-3. Postgres/Supabase or equivalent persistence.
-4. ERP connectors and inbound PO sync.
-5. Supplier-level response analytics.
-6. Buyer approval rules for changed dates or quantities.
+## Remaining production gap
+No customer traction claimed; no server-side persistence, authenticated supplier links, real email delivery, identity/access system, or ERP write-back. Those remain acquisition expansion opportunities.

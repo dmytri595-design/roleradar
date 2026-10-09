@@ -1,37 +1,42 @@
-# CommitPulse
+# CommitPulse v1.2
 
 **Supplier confirmations without the chasing.**
 
-CommitPulse is a focused procurement workflow for small manufacturers, distributors and importers that already have an ERP or spreadsheet export but still chase suppliers manually for delivery-date and quantity commitments.
+CommitPulse is a focused procurement workflow for manufacturers, importers and distributors who already use an ERP or spreadsheet export but still chase suppliers manually for delivery dates and quantities.
 
-## Core workflow
-Import open POs → triage → select → create grouped supplier requests → supplier confirms multiple POs in one response → exceptions are surfaced → export.
+## Buyer workflow
+1. Import an open-PO CSV with column mapping and preview.
+2. Filter the queue by text, status, date risk and priority.
+3. Create grouped confirmation requests, one per supplier.
+4. Let a supplier confirm date and quantity for multiple POs in one request.
+5. Review changed commitments in the Exception Desk.
+6. Generate supplier-ready email drafts and log follow-up cycles.
+7. Measure response/on-time performance.
+8. Export PO data, analytics, activity history, HTML reports or a full JSON backup.
 
-## v1.1 highlights
-- Multi-PO supplier confirmation requests.
-- Persistent request center with request IDs.
-- Copyable supplier links using `?view=supplier&request=RQ-XXXX`.
-- Supplier can confirm quantity + date for every PO in one request.
-- Exceptions are automatically identified when date, quantity, or note changes.
-- Request status and progress tracking.
-- Select-all, filters and correct visible-row CSV export.
-- Legacy v1 workspace migration.
-- Responsive operations UI with clear buyer/supplier separation.
+## v1.2 capabilities
+- Overview and attention queue
+- Open POs with filters, priority, manual create/edit
+- Supplier coverage and response-rate view
+- Request Center with local shareable request URLs
+- Multi-PO supplier confirmation and exceptions
+- Exception Desk with accept-proposal and reopen actions
+- Reminder queue with next-follow-up dates
+- Grouped email drafts with copy and mail-app handoff
+- Analytics scorecards and supplier ranking
+- CSV import with column mapping, date/quantity validation and duplicate skipping
+- CSV export covering price, priority and follow-up fields
+- JSON backup / restore
+- Activity CSV export
+- HTML weekly operations report download
+- Workspace settings for name, reminder cadence, due-soon window and currency
+- Browser persistence via localStorage
+- Responsive UI and Playwright smoke test
 
-## Current implementation
-- Self-contained HTML/CSS/JavaScript.
-- localStorage persistence.
-- CSV import with column mapping and preview.
-- Supplier grouping and response-rate views.
-- Request center and audit trail.
-- No external API dependency for the demo.
-- Synthetic demo data only.
+## Important limits
+This is a browser-local MVP. Supplier links resolve only in the same browser profile because state lives in localStorage; the app does not send emails, host shareable server-backed supplier sessions, authenticate users, persist data in the cloud, or write to an ERP. A production release needs a backend, signed expiring tokens, transactional email, and integration adapters.
 
-## Honest limitations
-The live demo simulates request delivery locally. It does not send email, authenticate supplier tokens, provide shared cloud persistence, or write back to an ERP. Production should add signed expiring links, authenticated storage, transactional email and ERP adapters.
+## Status
+Working MVP / pre-launch / pre-revenue. No customer, user, revenue or ERP integration claims.
 
-## Release position
-Working MVP / pre-launch / pre-revenue. No customer, user, revenue, or integration claims are made.
-
-## Commercial
-Suggested acquisition asking price: **$4,900 USD one-time**.
+Suggested asking price: **$4,900 USD one-time**.
