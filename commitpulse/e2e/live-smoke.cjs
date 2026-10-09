@@ -10,6 +10,8 @@ page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 
 await page.goto(url,{waitUntil:'networkidle'});
 await page.waitForSelector('#metricCards .metric');
+if (errors.length) throw new Error('Boot browser errors: '+errors.join(' | '));
+if (await page.locator('.navbtn[data-screen="exceptions"]').count() !== 1) throw new Error('v1.2 navigation did not initialize');
 if(await page.locator('#metricCards .metric').count()!==5) throw new Error('Top overview metrics missing');
 if(!(await page.locator('#attentionQueue').innerText()).includes('Sundby Packaging AB')) throw new Error('Attention queue missing soon PO');
 
