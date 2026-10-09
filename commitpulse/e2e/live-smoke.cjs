@@ -79,7 +79,7 @@ await page.click('.navbtn[data-screen="settings"]');
 await page.fill('#v12WorkspaceName','Smoke Workspace');
 await page.fill('#v12ReminderDays','4');
 await page.click('#v12SaveSettings');
-if (!(await page.locator('.topbar .pill').innerText()).includes('Smoke Workspace')) throw new Error('Workspace name did not update');
+if (!(await page.locator('.topbar .workspace-pill').innerText()).includes('Smoke Workspace')) throw new Error('Workspace name did not update');
 
 await page.click('.navbtn[data-screen="orders"]');
 await page.click('#v12NewPo');
