@@ -8,8 +8,10 @@
 **Monthly revenue:** $0  
 **Suggested asking price:** $4,900 USD one-time
 
-**Description:** HookForge helps developers rehearse webhook failure modes before production. Build reusable scenarios, edit and validate JSON payloads, simulate retry policies and failure patterns, test HMAC-SHA256 signature/tamper behavior locally, inspect delivery timelines, review prioritized findings, and export portable reports.
+**Description:** HookForge helps developers rehearse webhook failure modes before production. Build reusable scenarios, edit and validate JSON payloads against built-in and custom contract rules, simulate retry policies and failure patterns, test HMAC-SHA256 signature/tamper behavior locally, run batch reliability matrices, inspect delivery timelines, review prioritized findings, and export portable JSON/CSV/HTML reports.
 
-**Problem solved:** Webhook consumers fail in predictable but under-tested ways: retry storms, duplicate events, stale signatures, 429 rate limits, timeouts, and out-of-order updates. HookForge turns those failure modes into repeatable drills without contacting a live endpoint.
+**Problem solved:** Webhook consumers fail in predictable but under-tested ways: retry storms, duplicate events, stale signatures, 429 rate limits, timeouts and out-of-order updates. HookForge turns these failure modes into repeatable drills without contacting a live endpoint or requiring a production secret.
 
-**Honesty note:** Drill deliveries are simulated, not real network calls. There is no cloud sync, team account, hosted endpoint runner, or provider-specific signature adapter in this release.
+**Included assets:** Single-file app, source code, license, buyer documentation, technical handoff, QA report, scenario pack portability, workspace backup, and test checklist.
+
+**Honesty note:** Drill deliveries are simulated, not real network calls. There is no cloud sync, team account, hosted endpoint runner, provider-certified signature adapter, or production integration in this release.
