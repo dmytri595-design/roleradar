@@ -1,18 +1,25 @@
-# Technical Handoff
+# HookForge Technical Handoff v1.1
 
-- Entry point: `index.html` (self-contained HTML/CSS/JS)
-- State: localStorage key `hookforge:workspace:v1`
-- Crypto: browser Web Crypto HMAC-SHA256
-- Reports: local state, JSON/CSV export
-- Workspace backup: JSON import/export with version validation
-- No package manager or build step
-- Safe default: no external network requests
+## Runtime
+- Self-contained HTML, CSS and JavaScript; no package install or build step.
+- Web Crypto API for HMAC-SHA256 generation.
+- localStorage for scenario, report and workspace persistence.
+- Static deployment supported.
 
-## Extension points
-1. Isolated server-side delivery runner with destination allowlist and SSRF protections
-2. Provider-specific signature adapters
-3. Database/auth/team workspaces
-4. Scheduled replay and dead-letter integrations
-5. CI integration and test artifacts
+## Main modules
+- Scenario library: built-in and custom failure recipes.
+- Payload studio: JSON parsing/formatting, payload validation and size feedback.
+- Contract validator: built-in checks and configurable required dot-paths.
+- Signature lab: local HMAC-SHA256 generation and tamper verification; educational provider-style presets.
+- Chaos drill: deterministic failure outcomes, retry policies, timeline, findings and score.
+- Test matrix: batch combinations of failure patterns and retry policies.
+- Reporting: JSON, CSV, self-contained HTML report, scenario pack portability and full workspace backup.
 
-Never add arbitrary URL fetching to a server function without SSRF controls, egress restrictions, time/size limits and secret redaction.
+## Persistence model
+Everything remains in the browser's localStorage. Export a workspace backup before clearing browser data. Imported JSON is parsed and basic schema-checked before applying.
+
+## Production adapter roadmap
+A production edition would need a server-side runner, strict endpoint allowlisting and egress restrictions, encrypted secret storage, authentication and team workspaces, persistent audit logs, real delivery/replay queues, rate limiting, provider-specific signature verification and clear consent before contacting an external endpoint.
+
+## Safety boundary
+The current app never contacts an external endpoint. The reliability score and timeline are based on deterministic simulation, not real delivery telemetry.
