@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const fs = require('fs/promises');
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -68,15 +69,11 @@ const { chromium } = require('playwright');
   ]);
   if (htmlDownload.suggestedFilename() !== 'roleradar-audit-report.html') throw new Error('HTML export failed');
 
-  const csv = 'name,email,role,department,last_login,mfa,admin,apps,status\nTest User,test@example.com,Developer,Engineering,2026-10-05,yes,no,3,active\nTest Admin,admin@example.com,Admin,IT,2026-01-01,no,yes,12,active\n';
+  const formulaLikeName = String.fromCharCode(61) + '1+1';
+  const csv = 'name,email,role,department,last_login,mfa,admin,apps,status\n' + formulaLikeName + ',test@example.com,Developer,Engineering,2026-10-05,yes,no,3,active\nTest Admin,admin@example.com,Admin,IT,2026-01-01,no,yes,12,active\n';
   await page.locator('#uploadBtn').click();
   await page.locator('#fileInput').setInputFiles({ name: 'smoke.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
   await page.waitForTimeout(300);
-  console.log('File input count:', await page.locator('#fileInput').evaluate(el => el.files.length));
-  console.log('File name:', await page.locator('#fileInput').evaluate(el => el.files[0] ? el.files[0].name : 'none'));
-  console.log('Global parseCsv:', await page.evaluate(() => typeof parseCsv));
-  console.log('Live parseCsv source:', await page.evaluate(() => parseCsv.toString().slice(0, 2400)));
-  console.log('Direct parser result:', await page.evaluate((text) => { try { return {ok:true,count:parseCsv(text).length}; } catch (e) { return {ok:false,error:String(e)}; } }, csv));
   const parserMatrix = await page.evaluate(() => {
     const cases = [
       'name,email\nAlice,a@example.com\nBob,b@example.com\n',
@@ -85,15 +82,21 @@ const { chromium } = require('playwright');
     ];
     return cases.map(source => { try { return {count: parseCsv(source).length}; } catch (e) { return {error: String(e)}; } });
   });
-  console.log('Parser matrix:', JSON.stringify(parserMatrix));
   if (parserMatrix.some(x => x.error || x.count !== 2)) throw new Error('CSV parser matrix failed: '+JSON.stringify(parserMatrix));
   const importedRows = await page.locator('#tbody tr').count();
-  console.log('CSV rows after import:', importedRows);
-  console.log('CSV tbody:', await page.locator('#tbody').innerHTML());
-  console.log('Toast after import:', await page.locator('#toast').innerText());
-  console.log('Browser errors after import:', JSON.stringify(errors));
   if (importedRows !== 2) throw new Error('CSV import failed: expected 2 imported rows, got '+importedRows);
   if ((await page.locator('#posture').innerText()) === '—') throw new Error('CSV import did not recalculate posture');
+
+  await page.getByRole('button', { name: /Overview/ }).click();
+  const [regressionDownload] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#exportBtn').click()
+  ]);
+  if (regressionDownload.suggestedFilename() !== 'roleradar-review.csv') throw new Error('Regression CSV export failed');
+  await regressionDownload.saveAs('/tmp/roleradar-review-regression.csv');
+  const exportedCsv = await fs.readFile('/tmp/roleradar-review-regression.csv', 'utf8');
+  if (exportedCsv.split(/\r?\n/).length !== 3) throw new Error('CSV export must contain a header and two separate data rows');
+  if (!exportedCsv.includes('"\'' + formulaLikeName + '"')) throw new Error('Formula-like CSV cell was not neutralized');
 
   page.once('dialog', d => d.accept());
   await page.locator('#resetBtn').click();
