@@ -3,6 +3,8 @@ name: Live browser smoke test
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -18,5 +20,14 @@ jobs:
           npm init -y
           npm install --no-save playwright@1.63.0
           npx playwright install --with-deps chromium
-      - name: Run live smoke test
+      - name: Start local static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/roleradar-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/roleradar-http.log
+          exit 1
+      - name: Run smoke test against the current checkout
         run: node e2e/live-smoke.cjs
