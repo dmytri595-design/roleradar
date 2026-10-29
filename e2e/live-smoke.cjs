@@ -8,7 +8,8 @@ const fs = require('fs/promises');
   page.on('pageerror', err => errors.push(String(err)));
   page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
 
-  await page.goto('https://roleradar-demo.vercel.app/?smoke=1', { waitUntil: 'networkidle', timeout: 30000 });
+  const base = process.env.BASE_URL || 'http://127.0.0.1:4173/';
+  await page.goto(base + '?smoke=1', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(500);
   await page.getByText('RoleRadar', { exact: true }).first().waitFor();
 
