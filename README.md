@@ -14,7 +14,7 @@ https://roleradar-demo.vercel.app
 
 **Working B2B micro-SaaS MVP / pre-launch / pre-revenue**
 
-The public demo is browser-local: identity exports are processed in the user's browser and can be persisted locally. No production customer data, live IdP credentials, or current revenue are claimed.
+The public demo is browser-local: identity exports are processed in the user's browser and can be persisted locally. The Vercel URL is a manually deployed static snapshot; GitHub main is the source of truth and a redeployment is required after source changes. No production customer data, live IdP credentials, or current revenue are claimed.
 
 ## Buyer snapshot
 
@@ -75,7 +75,7 @@ The repository includes two GitHub Actions checks:
 - source validation with Node syntax checking;
 - live Chromium smoke testing against the public Vercel URL.
 
-The live smoke flow covers loading the demo, identity inventory, findings/remediation, policy save, CSV export, JSON export, HTML report export, CSV import, reset, and browser error detection.
+The browser smoke workflow serves the current checkout locally and covers dashboard load, identity inventory, findings/remediation, policy save, CSV export, JSON export, HTML report export, CSV import, reset, and browser error detection.
 
 ## Architecture and extension path
 
@@ -96,6 +96,7 @@ The MVP is intentionally easy to extend:
 - listing.md - acquisition listing
 - valuation.md - pricing rationale
 - docs/ACQUISITION_BRIEF.md - buyer-facing handoff brief
+- docs/DIRECT_ACQUISITION_BRIEF.md - direct sale scope, transfer checklist, and licensing boundaries
 - LICENSE - MIT
 .github/workflows/validate.yml - non-destructive source validation
 .github/workflows/live-smoke.yml - public live browser smoke test
