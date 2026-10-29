@@ -95,7 +95,8 @@ const fs = require('fs/promises');
   if (regressionDownload.suggestedFilename() !== 'roleradar-review.csv') throw new Error('Regression CSV export failed');
   await regressionDownload.saveAs('/tmp/roleradar-review-regression.csv');
   const exportedCsv = await fs.readFile('/tmp/roleradar-review-regression.csv', 'utf8');
-  if (exportedCsv.split(/\r?\n/).length !== 3) throw new Error('CSV export must contain a header and two separate data rows');
+  const csvLines = exportedCsv.trimEnd().split(/\r?\n/).filter(Boolean);
+  if (csvLines.length < 3 || !csvLines[0].includes('name') || !csvLines[1].includes('test@example.com') || !csvLines[2].includes('admin@example.com')) throw new Error('CSV export must contain a header and both imported rows; got '+JSON.stringify({length:exportedCsv.length,lines:csvLines.length,sample:exportedCsv.slice(0,900)}));
   if (!exportedCsv.includes('"\'' + formulaLikeName + '"')) throw new Error('Formula-like CSV cell was not neutralized');
 
   page.once('dialog', d => d.accept());
